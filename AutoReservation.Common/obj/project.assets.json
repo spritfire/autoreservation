@@ -14,11 +14,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Michel\\Desktop\\HSR\\02 Module\\2019_HS\\MsTe\\Übungen\\99_Miniprojekt\\Vorgabe\\AutoReservation.Common\\AutoReservation.Common.csproj",
+      "projectUniqueName": "C:\\Users\\Michel\\Desktop\\autoreservation\\AutoReservation.Common\\AutoReservation.Common.csproj",
       "projectName": "AutoReservation.Common",
-      "projectPath": "C:\\Users\\Michel\\Desktop\\HSR\\02 Module\\2019_HS\\MsTe\\Übungen\\99_Miniprojekt\\Vorgabe\\AutoReservation.Common\\AutoReservation.Common.csproj",
+      "projectPath": "C:\\Users\\Michel\\Desktop\\autoreservation\\AutoReservation.Common\\AutoReservation.Common.csproj",
       "packagesPath": "C:\\Users\\Michel\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Michel\\Desktop\\HSR\\02 Module\\2019_HS\\MsTe\\Übungen\\99_Miniprojekt\\Vorgabe\\AutoReservation.Common\\obj\\",
+      "outputPath": "C:\\Users\\Michel\\Desktop\\autoreservation\\AutoReservation.Common\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
