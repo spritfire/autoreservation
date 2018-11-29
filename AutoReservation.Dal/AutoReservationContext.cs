@@ -62,6 +62,6 @@ namespace AutoReservation.Dal
             modelBuilder.Entity<Entities.Auto>()
                 .Property(e => e.RowVersion)
                 .IsRowVersion();
-        }
+        }       
     }
 }
