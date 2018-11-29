@@ -1,6 +1,6 @@
 namespace AutoReservation.Dal.Entities
 {
-    public class Auto
+    public abstract class Auto
     {
         public int Id { get; set; }
         public string Marke { get; set; }
