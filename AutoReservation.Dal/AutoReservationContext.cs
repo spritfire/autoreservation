@@ -1,4 +1,5 @@
 ﻿using System.Configuration;
+using AutoReservation.Dal.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Console;
@@ -22,5 +23,12 @@ namespace AutoReservation.Dal
                     .UseSqlServer(ConfigurationManager.ConnectionStrings[nameof(AutoReservationContext)].ConnectionString);
             }
         }
+        
+        
+        
+        public DbSet<Auto> Autos { get; set; }
+        public DbSet<Kunde> Kunden { get; set; }
+        public DbSet<Reservation> Reservationen { get; set; }
+       
     }
 }
