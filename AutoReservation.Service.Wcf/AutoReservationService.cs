@@ -55,5 +55,93 @@ namespace AutoReservation.Service.Wcf
             }
             return kundeDtos;
         }
+
+        public AutoDto GetAutoById(int autoId)
+        {
+            WriteActualMethod();
+            return new AutoManager()
+                .GetById(autoId)
+                .ConvertToDto();
+        }
+
+        public void InsertAuto(AutoDto auto)
+        {
+            WriteActualMethod();
+            Auto autoEntity = auto.ConvertToEntity();
+            new AutoManager()
+                .Insert(autoEntity);
+        }
+
+        public void UpdateAuto(AutoDto auto)
+        {
+            WriteActualMethod();
+            Auto autoEntity = auto.ConvertToEntity();
+            new AutoManager()
+                .Update(autoEntity);
+        }
+
+        public void RemoveAuto(AutoDto auto)
+        {
+            WriteActualMethod();
+            Auto autoEntity = auto.ConvertToEntity();
+            new AutoManager()
+                .Remove(autoEntity);
+        }
+
+        public List<AutoDto> AutoList()
+        {
+            WriteActualMethod();
+            List<AutoDto> autoDtos = new List<AutoDto>();
+            List<Auto> autoEntities = new AutoManager().List();
+            foreach (Auto a in autoEntities)
+            {
+                autoDtos.Add(a.ConvertToDto());
+            }
+            return autoDtos;
+        }
+
+        public ReservationDto GetReservationById(int reservationId)
+        {
+            WriteActualMethod();
+            return new ReservationManager()
+                .GetById(reservationId)
+                .ConvertToDto();
+        }
+
+        public void InsertReservation(ReservationDto reservation)
+        {
+            WriteActualMethod();
+            Reservation reservationEntity = reservation.ConvertToEntity();
+            new ReservationManager()
+                .Insert(reservationEntity);
+        }
+
+        public void UpdateReservation(ReservationDto reservation)
+        {
+            WriteActualMethod();
+            Reservation reservationEntity = reservation.ConvertToEntity();
+            new ReservationManager()
+                .Update(reservationEntity);
+        }
+
+        public void RemoveReservation(ReservationDto reservation)
+        {
+            WriteActualMethod();
+            Reservation reservationEntity = reservation.ConvertToEntity();
+            new ReservationManager()
+                .Remove(reservationEntity);
+        }
+
+        public List<ReservationDto> ReservationList()
+        {
+            WriteActualMethod();
+            List<ReservationDto> reservationDtos = new List<ReservationDto>();
+            List<Reservation> reservations = new ReservationManager().List();
+            foreach (Reservation r in reservations)
+            {
+                reservationDtos.Add(r.ConvertToDto());
+            }
+            return reservationDtos;
+        }
     }
 }
