@@ -1,8 +1,0 @@
-C:\Users\dilli\Documents\Semester3\MsTe\02_Uebungen\100_Miniprojekt_GIT\autoreservation\AutoReservation.Common\bin\Debug\net471\AutoReservation.Common.dll
-C:\Users\dilli\Documents\Semester3\MsTe\02_Uebungen\100_Miniprojekt_GIT\autoreservation\AutoReservation.Common\bin\Debug\net471\AutoReservation.Common.pdb
-C:\Users\dilli\Documents\Semester3\MsTe\02_Uebungen\100_Miniprojekt_GIT\autoreservation\AutoReservation.Common\obj\Debug\net471\AutoReservation.Common.csprojAssemblyReference.cache
-C:\Users\dilli\Documents\Semester3\MsTe\02_Uebungen\100_Miniprojekt_GIT\autoreservation\AutoReservation.Common\obj\Debug\net471\AutoReservation.Common.csproj.CoreCompileInputs.cache
-C:\Users\dilli\Documents\Semester3\MsTe\02_Uebungen\100_Miniprojekt_GIT\autoreservation\AutoReservation.Common\obj\Debug\net471\AutoReservation.Common.AssemblyInfoInputs.cache
-C:\Users\dilli\Documents\Semester3\MsTe\02_Uebungen\100_Miniprojekt_GIT\autoreservation\AutoReservation.Common\obj\Debug\net471\AutoReservation.Common.AssemblyInfo.cs
-C:\Users\dilli\Documents\Semester3\MsTe\02_Uebungen\100_Miniprojekt_GIT\autoreservation\AutoReservation.Common\obj\Debug\net471\AutoReservation.Common.dll
-C:\Users\dilli\Documents\Semester3\MsTe\02_Uebungen\100_Miniprojekt_GIT\autoreservation\AutoReservation.Common\obj\Debug\net471\AutoReservation.Common.pdb
