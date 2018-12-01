@@ -1,5 +1,6 @@
 ﻿using AutoReservation.BusinessLayer;
 using AutoReservation.Common.DataTransferObjects;
+using AutoReservation.Common.Interfaces;
 using AutoReservation.Dal.Entities;
 using System;
 using System.Collections.Generic;
@@ -7,11 +8,12 @@ using System.Diagnostics;
 
 namespace AutoReservation.Service.Wcf
 {
-    public class AutoReservationService
+    public class AutoReservationService : IAutoReservationService
     {
         private static void WriteActualMethod()
             => Console.WriteLine($"Calling: {new StackTrace().GetFrame(1).GetMethod().Name}");
 
+        #region Kunde
         public KundeDto GetKundeById(int kundeId)
         {
             WriteActualMethod();
@@ -55,7 +57,8 @@ namespace AutoReservation.Service.Wcf
             }
             return kundeDtos;
         }
-
+        #endregion
+        #region Auto
         public AutoDto GetAutoById(int autoId)
         {
             WriteActualMethod();
@@ -99,7 +102,8 @@ namespace AutoReservation.Service.Wcf
             }
             return autoDtos;
         }
-
+        #endregion
+        #region Reservation
         public ReservationDto GetReservationById(int reservationId)
         {
             WriteActualMethod();
@@ -143,5 +147,6 @@ namespace AutoReservation.Service.Wcf
             }
             return reservationDtos;
         }
+        #endregion
     }
 }

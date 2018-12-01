@@ -1,4 +1,5 @@
 ﻿using System;
+using AutoReservation.Common.DataTransferObjects;
 using AutoReservation.Common.Interfaces;
 using AutoReservation.TestEnvironment;
 using Xunit;
@@ -15,19 +16,28 @@ namespace AutoReservation.Service.Wcf.Testing
         [Fact]
         public void GetAutosTest()
         {
-            throw new NotImplementedException("Test not implemented.");
+            var autoList = Target.AutoList();
+
+            Assert.NotNull(autoList);
+            Assert.True(autoList.Count > 0);
         }
 
         [Fact]
         public void GetKundenTest()
         {
-            throw new NotImplementedException("Test not implemented.");
+            var kundeList = Target.KundeList();
+
+            Assert.NotNull(kundeList);
+            Assert.True(kundeList.Count > 0);
         }
 
         [Fact]
         public void GetReservationenTest()
         {
-            throw new NotImplementedException("Test not implemented.");
+            var reservationList = Target.ReservationList();
+
+            Assert.NotNull(reservationList);
+            Assert.True(reservationList.Count > 0);
         }
 
         #endregion
@@ -37,19 +47,28 @@ namespace AutoReservation.Service.Wcf.Testing
         [Fact]
         public void GetAutoByIdTest()
         {
-            throw new NotImplementedException("Test not implemented.");
+            AutoDto auto = Target.GetAutoById(1);
+
+            Assert.NotNull(auto);
+            Assert.Equal(1, auto.Id);
         }
 
         [Fact]
         public void GetKundeByIdTest()
         {
-            throw new NotImplementedException("Test not implemented.");
+            KundeDto kunde = Target.GetKundeById(1);
+
+            Assert.NotNull(kunde);
+            Assert.Equal(1, kunde.Id);
         }
 
         [Fact]
         public void GetReservationByNrTest()
         {
-            throw new NotImplementedException("Test not implemented.");
+            ReservationDto reservation = Target.GetReservationById(1);
+
+            Assert.NotNull(reservation);
+            Assert.Equal(1, reservation.ReservationsNr);
         }
 
         #endregion
@@ -59,19 +78,25 @@ namespace AutoReservation.Service.Wcf.Testing
         [Fact]
         public void GetAutoByIdWithIllegalIdTest()
         {
-            throw new NotImplementedException("Test not implemented.");
+            AutoDto auto = Target.GetAutoById(-1);
+
+            Assert.Null(auto);
         }
 
         [Fact]
         public void GetKundeByIdWithIllegalIdTest()
         {
-            throw new NotImplementedException("Test not implemented.");
+            KundeDto kunde = Target.GetKundeById(-1);
+
+            Assert.Null(kunde);
         }
 
         [Fact]
         public void GetReservationByNrWithIllegalIdTest()
         {
-            throw new NotImplementedException("Test not implemented.");
+            ReservationDto reservation = Target.GetReservationById(-1);
+
+            Assert.Null(reservation);
         }
 
         #endregion
@@ -81,19 +106,46 @@ namespace AutoReservation.Service.Wcf.Testing
         [Fact]
         public void InsertAutoTest()
         {
-            throw new NotImplementedException("Test not implemented.");
+            AutoDto newAuto = new AutoDto
+            {
+                Id = 5,
+                Marke = "Renault",
+                Tagestarif = 80
+            };
+
+            Target.InsertAuto(newAuto);
+            AutoDto autoRead = Target.GetAutoById(5);
+            Assert.Equal(newAuto.ToString(), autoRead.ToString());
         }
 
         [Fact]
         public void InsertKundeTest()
         {
-            throw new NotImplementedException("Test not implemented.");
+            KundeDto newKunde = new KundeDto
+            {
+                Id = 5,
+                Nachname = "Illi",
+                Vorname = "Dominique"
+            };
+
+            Target.InsertKunde(newKunde);
+            KundeDto kundeRead = Target.GetKundeById(5);
+            Assert.Equal(kundeRead.ToString(), newKunde.ToString());
         }
 
         [Fact]
         public void InsertReservationTest()
         {
-            throw new NotImplementedException("Test not implemented.");
+            ReservationDto newReservation = new ReservationDto
+            {
+                ReservationsNr = 5,
+                Von = new DateTime(2019, 02, 01),
+                Bis = new DateTime(2019, 02, 14),
+            };
+
+            Target.InsertReservation(newReservation);
+            ReservationDto reservationRead = Target.GetReservationById(5);
+            Assert.Equal(reservationRead.ToString(), newReservation.ToString());
         }
 
         #endregion
@@ -103,19 +155,31 @@ namespace AutoReservation.Service.Wcf.Testing
         [Fact]
         public void DeleteAutoTest()
         {
-            throw new NotImplementedException("Test not implemented.");
+            AutoDto autoToDelete = Target.GetAutoById(4);
+            Target.RemoveAuto(autoToDelete);
+
+            AutoDto autoDeleted = Target.GetAutoById(4);
+            Assert.Null(autoDeleted);
         }
 
         [Fact]
         public void DeleteKundeTest()
         {
-            throw new NotImplementedException("Test not implemented.");
+            KundeDto kundeToDelete = Target.GetKundeById(4);
+            Target.RemoveKunde(kundeToDelete);
+
+            KundeDto kundeDeleted = Target.GetKundeById(4);
+            Assert.Null(kundeDeleted);
         }
 
         [Fact]
         public void DeleteReservationTest()
         {
-            throw new NotImplementedException("Test not implemented.");
+            ReservationDto reservationToDelete = Target.GetReservationById(4);
+            Target.RemoveReservation(reservationToDelete);
+
+            ReservationDto reservationDeleted = Target.GetReservationById(4);
+            Assert.Null(reservationDeleted);
         }
 
         #endregion
@@ -169,7 +233,16 @@ namespace AutoReservation.Service.Wcf.Testing
         [Fact]
         public void InsertReservationWithInvalidDateRangeTest()
         {
-            throw new NotImplementedException("Test not implemented.");
+            ReservationDto newReservation = new ReservationDto
+            {
+                ReservationsNr = 6,
+                Von = new DateTime(2019, 02, 01),
+                Bis = new DateTime(2019, 01, 14),
+            };
+
+            Target.InsertReservation(newReservation);
+            ReservationDto reservationRead = Target.GetReservationById(5);
+            Assert.Equal(reservationRead.ToString(), newReservation.ToString());
         }
 
         [Fact]
