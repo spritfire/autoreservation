@@ -9,8 +9,8 @@ namespace AutoReservation.Common.DataTransferObjects
         public string Nachname { get; set; }
         public byte[] RowVersion { get; set; }
         public string Vorname { get; set; }
-        
-        //public override string ToString()
-        //    => $"{Id}; {Nachname}; {Vorname}; {Geburtsdatum}; {RowVersion}";
+
+        public override string ToString()
+            => $"{Id}; {Nachname}; {Vorname}; {Geburtsdatum}; {RowVersion}";
     }
 }
