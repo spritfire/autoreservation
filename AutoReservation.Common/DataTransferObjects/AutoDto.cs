@@ -8,9 +8,9 @@
         public string Marke { get; set; }
         public byte[] RowVersion { get; set; }
         public int Tagestarif { get; set; }
-        public AutoKlasse AutoKlasse { get; set; }        
-        
-        //public override string ToString()
-        //    => $"{Id}; {Marke}; {Tagestarif}; {Basistarif}; {AutoKlasse}; {RowVersion}";
+        public AutoKlasse AutoKlasse { get; set; }
+
+        public override string ToString()
+            => $"{Id}; {Marke}; {Tagestarif}; {Basistarif}; {AutoKlasse}; {RowVersion}";
     }
 }
