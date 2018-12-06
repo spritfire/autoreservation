@@ -1,8 +1,12 @@
-﻿using System;
+﻿using AutoReservation.Common.DataTransferObjects;
+using AutoReservation.Common.DataTransferObjects.Faults;
+using AutoReservation.Common.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.ServiceModel;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -12,7 +16,9 @@ namespace AutoReservation.Client.ViewModels
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public RelayCommand SaveCommand { get; set; }
+        public RelayCommand InsertKundeCommand { get; set; }
+        public RelayCommand UpdateKundeCommand { get; set; }
+        public RelayCommand RemoveKundeCommand { get; set; }
 
         private DateTime _geburtsdatum;
         private int _id;
@@ -20,9 +26,14 @@ namespace AutoReservation.Client.ViewModels
         private byte[] _rowVersion;
         private string _vorname;
 
-        public KundeViewModel()
+        private IAutoReservationService _target;
+
+        public KundeViewModel(IAutoReservationService target)
         {
-            SaveCommand = new RelayCommand(Save);
+            _target = target;
+            InsertKundeCommand = new RelayCommand(InsertKunde);
+            UpdateKundeCommand = new RelayCommand(UpdateKunde);
+            RemoveKundeCommand = new RelayCommand(RemoveKunde);
         }
 
         public DateTime Geburtsdatum
@@ -66,9 +77,53 @@ namespace AutoReservation.Client.ViewModels
             return true;
         }
 
-        public void Save()
+        public void InsertKunde()
         {
-            
+            _target.InsertKunde(new KundeDto
+            {
+                Geburtsdatum = _geburtsdatum,
+                Nachname = _nachname,
+                RowVersion = _rowVersion,
+                Vorname = _vorname
+            });
+        }
+
+        public void UpdateKunde()
+        {
+            try
+            {
+                _target.UpdateKunde(new KundeDto
+                {
+                    Geburtsdatum = _geburtsdatum,
+                    Nachname = _nachname,
+                    Id = _id,
+                    RowVersion = _rowVersion,
+                    Vorname = _vorname
+                });
+            }
+            catch (FaultException<OptimisticConcurrencyFault> e)
+            {
+                //Handle Fault
+            }
+        }
+
+        public void RemoveKunde()
+        {
+            try
+            {
+                _target.RemoveKunde(new KundeDto
+                {
+                    Geburtsdatum = _geburtsdatum,
+                    Nachname = _nachname,
+                    Id = _id,
+                    RowVersion = _rowVersion,
+                    Vorname = _vorname
+                });
+            }
+            catch (FaultException<OptimisticConcurrencyFault> e)
+            {
+                //Handle Fault
+            }
         }
     }
 }
