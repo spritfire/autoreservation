@@ -29,17 +29,31 @@ namespace AutoReservation.BusinessLayer
         {
             using (AutoReservationContext context = new AutoReservationContext())
             {
-                context.Entry(kunde).State = EntityState.Added;
-                context.SaveChanges();
+                try
+                {
+                    context.Entry(kunde).State = EntityState.Added;
+                    context.SaveChanges();
+                }
+                catch (DbUpdateException e)
+                {
+                    throw CreateOptimisticConcurrencyException(context, kunde);
+                }
             }
         }
-        
+
         public void Update(Kunde kunde)
         {
             using (AutoReservationContext context = new AutoReservationContext())
             {
-                context.Entry(kunde).State = EntityState.Modified;
-                context.SaveChanges();
+                try
+                {
+                    context.Entry(kunde).State = EntityState.Modified;
+                    context.SaveChanges();
+                }
+                catch (DbUpdateException e)
+                {
+                    throw CreateOptimisticConcurrencyException(context, kunde);
+                }
             }
         }
 
@@ -47,8 +61,15 @@ namespace AutoReservation.BusinessLayer
         {
             using (AutoReservationContext context = new AutoReservationContext())
             {
-                context.Entry(kunde).State = EntityState.Deleted;
-                context.SaveChanges();
+                try
+                {
+                    context.Entry(kunde).State = EntityState.Deleted;
+                    context.SaveChanges();
+                }
+                catch (DbUpdateException e)
+                {
+                    throw CreateOptimisticConcurrencyException(context, kunde);
+                }
             }
         }
     }

@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
+using AutoReservation.BusinessLayer.Exceptions;
 using AutoReservation.Dal;
 using AutoReservation.Dal.Entities;
 using Microsoft.EntityFrameworkCore;
@@ -29,17 +31,31 @@ namespace AutoReservation.BusinessLayer
         {
             using (AutoReservationContext context = new AutoReservationContext())
             {
-                context.Entry(auto).State = EntityState.Added;
-                context.SaveChanges();
+                try
+                {
+                    context.Entry(auto).State = EntityState.Added;
+                    context.SaveChanges();
+                }
+                catch (DbUpdateException e)
+                {
+                    throw CreateOptimisticConcurrencyException(context, auto);
+                }
             }
         }
-        
+
         public void Update(Auto auto)
         {
             using (AutoReservationContext context = new AutoReservationContext())
             {
-                context.Entry(auto).State = EntityState.Modified;
-                context.SaveChanges();
+                try
+                {
+                    context.Entry(auto).State = EntityState.Modified;
+                    context.SaveChanges();
+                }
+                catch (DbUpdateException e)
+                {
+                    throw CreateOptimisticConcurrencyException(context, auto);
+                }
             }
         }
 
@@ -47,8 +63,15 @@ namespace AutoReservation.BusinessLayer
         {
             using (AutoReservationContext context = new AutoReservationContext())
             {
-                context.Entry(auto).State = EntityState.Deleted;
-                context.SaveChanges();
+                try
+                {
+                    context.Entry(auto).State = EntityState.Deleted;
+                    context.SaveChanges();
+                }
+                catch (DbUpdateException e)
+                {
+                    throw CreateOptimisticConcurrencyException(context, auto);
+                }
             }
         }
     }
