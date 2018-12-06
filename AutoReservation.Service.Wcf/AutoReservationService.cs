@@ -108,7 +108,7 @@ namespace AutoReservation.Service.Wcf
         {
             WriteActualMethod();
             return new ReservationManager()
-                .GetById(reservationId)
+                .GetByReservationNr(reservationId)
                 .ConvertToDto();
         }
 
