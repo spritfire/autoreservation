@@ -1,10 +1,13 @@
 ﻿using AutoReservation.BusinessLayer;
+using AutoReservation.BusinessLayer.Exceptions;
 using AutoReservation.Common.DataTransferObjects;
+using AutoReservation.Common.DataTransferObjects.Faults;
 using AutoReservation.Common.Interfaces;
 using AutoReservation.Dal.Entities;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.ServiceModel;
 
 namespace AutoReservation.Service.Wcf
 {
@@ -32,18 +35,42 @@ namespace AutoReservation.Service.Wcf
 
         public void UpdateKunde(KundeDto kunde)
         {
-            WriteActualMethod();
-            Kunde kundeEntity = kunde.ConvertToEntity();
-            new KundeManager()
-                .Update(kundeEntity);
+            try
+            {
+                WriteActualMethod();
+                Kunde kundeEntity = kunde.ConvertToEntity();
+                new KundeManager()
+                    .Update(kundeEntity);
+            }
+            catch (OptimisticConcurrencyException<Kunde> e)
+            {
+                throw new FaultException<OptimisticConcurrencyFault>(
+                    new OptimisticConcurrencyFault {
+                        Operation = "Update",
+                        Description = "Kunde was not updated, someone else beat you to it!"
+                    }
+                );
+            }
         }
 
         public void RemoveKunde(KundeDto kunde)
         {
-            WriteActualMethod();
-            Kunde kundeEntity = kunde.ConvertToEntity();
-            new KundeManager()
-                .Remove(kundeEntity);
+            try
+            {
+                WriteActualMethod();
+                Kunde kundeEntity = kunde.ConvertToEntity();
+                new KundeManager()
+                    .Remove(kundeEntity);
+            }
+            catch (OptimisticConcurrencyException<Kunde> e)
+            {
+                throw new FaultException<OptimisticConcurrencyFault>(
+                    new OptimisticConcurrencyFault {
+                        Operation = "Remove",
+                        Description = "Kunde was not removed, someone else edited the Kunde or it has already been removed!"
+                    }
+                );
+            }
         }
 
         public List<KundeDto> KundeList()
@@ -77,18 +104,43 @@ namespace AutoReservation.Service.Wcf
 
         public void UpdateAuto(AutoDto auto)
         {
-            WriteActualMethod();
-            Auto autoEntity = auto.ConvertToEntity();
-            new AutoManager()
-                .Update(autoEntity);
+            try
+            {
+                WriteActualMethod();
+                Auto autoEntity = auto.ConvertToEntity();
+                new AutoManager()
+                    .Update(autoEntity);
+            }
+            catch (OptimisticConcurrencyException<Auto> e)
+            {
+                throw new FaultException<OptimisticConcurrencyFault>(
+                    new OptimisticConcurrencyFault {
+                        Operation = "Update",
+                        Description = "Auto was not updated, someone else beat you to it!"
+                    }
+                );
+            }
         }
 
         public void RemoveAuto(AutoDto auto)
         {
-            WriteActualMethod();
-            Auto autoEntity = auto.ConvertToEntity();
-            new AutoManager()
-                .Remove(autoEntity);
+            try
+            {
+                WriteActualMethod();
+                Auto autoEntity = auto.ConvertToEntity();
+                new AutoManager()
+                    .Remove(autoEntity);
+            }
+            catch (OptimisticConcurrencyException<Auto> e)
+            {
+                throw new FaultException<OptimisticConcurrencyFault>(
+                    new OptimisticConcurrencyFault
+                    {
+                        Operation = "Remove",
+                        Description = "Auto was not removed, someone else edited the Auto or it has already been removed!"
+                    }
+                );
+            }
         }
 
         public List<AutoDto> AutoList()
@@ -114,26 +166,95 @@ namespace AutoReservation.Service.Wcf
 
         public void InsertReservation(ReservationDto reservation)
         {
-            WriteActualMethod();
-            Reservation reservationEntity = reservation.ConvertToEntity();
-            new ReservationManager()
-                .Insert(reservationEntity);
+            try
+            {
+                WriteActualMethod();
+                Reservation reservationEntity = reservation.ConvertToEntity();
+                new ReservationManager()
+                    .Insert(reservationEntity);
+            }
+            catch (AutoUnavailableException e)
+            {
+                throw new FaultException<AutoUnavailableFault>(
+                    new AutoUnavailableFault
+                    {
+                        Operation = "Insert",
+                        Description = "Auto is not available. The Reservation was not created!"
+                    }
+                );
+            }
+            catch (InvalidDateRangeException e)
+            {
+                throw new FaultException<InvalidDateRangeFault>(
+                    new InvalidDateRangeFault
+                    {
+                        Operation = "Insert",
+                        Description = "The end date must be at least 24h after the start date. The Reservation was not created!"
+                    }
+                );
+            }
         }
 
         public void UpdateReservation(ReservationDto reservation)
         {
-            WriteActualMethod();
-            Reservation reservationEntity = reservation.ConvertToEntity();
-            new ReservationManager()
-                .Update(reservationEntity);
+            try
+            {
+                WriteActualMethod();
+                Reservation reservationEntity = reservation.ConvertToEntity();
+                new ReservationManager()
+                    .Update(reservationEntity);
+            }
+            catch (AutoUnavailableException e)
+            {
+                throw new FaultException<AutoUnavailableFault>(
+                    new AutoUnavailableFault
+                    {
+                        Operation = "Update",
+                        Description = "The Auto you specified is not available. The Reservation was not updated!"
+                    }
+                );
+            }
+            catch (InvalidDateRangeException e)
+            {
+                throw new FaultException<InvalidDateRangeFault>(
+                    new InvalidDateRangeFault
+                    {
+                        Operation = "Update",
+                        Description = "The end date must be at least 24h after the start date. The Reservation was not updated!"
+                    }
+                );
+            }
+            catch (OptimisticConcurrencyException<Reservation> e)
+            {
+                throw new FaultException<OptimisticConcurrencyFault>(
+                    new OptimisticConcurrencyFault
+                    {
+                        Operation = "Update",
+                        Description = "Reservation was not updated, someone else beat you to it!"
+                    }
+                );
+            }
         }
 
         public void RemoveReservation(ReservationDto reservation)
         {
-            WriteActualMethod();
-            Reservation reservationEntity = reservation.ConvertToEntity();
-            new ReservationManager()
-                .Remove(reservationEntity);
+            try
+            {
+                WriteActualMethod();
+                Reservation reservationEntity = reservation.ConvertToEntity();
+                new ReservationManager()
+                    .Remove(reservationEntity);
+            }
+            catch (OptimisticConcurrencyException<Reservation> e)
+            {
+                throw new FaultException<OptimisticConcurrencyFault>(
+                    new OptimisticConcurrencyFault
+                    {
+                        Operation = "Remove",
+                        Description = "Reservation was not removed, someone else edited the Reservation or it has already been removed!"
+                    }
+                );
+            }
         }
 
         public List<ReservationDto> ReservationList()
