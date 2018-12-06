@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AutoReservation.Client.ViewModels
+namespace AutoReservation.Client.ViewModels.ViewModels
 {
-    class AutoViewModel
+    class KundeListViewModel
     {
     }
 }

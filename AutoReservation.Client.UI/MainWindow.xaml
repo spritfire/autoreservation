@@ -6,10 +6,34 @@
         xmlns:local="clr-namespace:AutoReservation.Client.UI"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-    <StackPanel>
-        <TextBlock HorizontalAlignment="Left" Width="150" Height="50" Text="Kunde"/>
-        <TextBox HorizontalAlignment="Left" Width="150" Height="50" Text="{Binding Nachname}" />
-        <TextBox HorizontalAlignment="Left" Width="150" Height="50" Text="{Binding Vorname}" />
-        <Button HorizontalAlignment="Left" Command="">Save</Button>
-    </StackPanel>
+    <Grid>
+        <TabControl>
+            <TabItem Header="Kunden"/>
+            <ListBox ItemsSource="{Binding }">
+                
+            </ListBox>
+            <TabItem Header="Autos"/>
+            <Grid>
+                <TabControl>
+                    <TabItem Header="Kunden"/>
+                    <ListBox ItemsSource="{Binding }">
+
+                    </ListBox>
+                    <TabItem Header="Autos"/>
+                    <TabItem Header="Reservationen"/>
+                </TabControl>
+            </Grid>
+            <TabItem Header="Reservationen"/>
+            <Grid>
+                <TabControl>
+                    <TabItem Header="Kunden"/>
+                    <ListBox ItemsSource="{Binding }">
+
+                    </ListBox>
+                    <TabItem Header="Autos"/>
+                    <TabItem Header="Reservationen"/>
+                </TabControl>
+            </Grid>
+        </TabControl>
+    </Grid>
 </Window>
