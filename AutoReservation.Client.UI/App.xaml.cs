@@ -8,6 +8,7 @@ using System.Linq;
 using System.ServiceModel;
 using System.Threading.Tasks;
 using System.Windows;
+using AutoReservation.Client.ViewModels;
 
 namespace AutoReservation.Client.UI
 {
@@ -20,7 +21,10 @@ namespace AutoReservation.Client.UI
         {
             ChannelFactory<IAutoReservationService> channelFactory = new ChannelFactory<IAutoReservationService>("AutoReservationService");
             var target = channelFactory.CreateChannel();
-            AutoDto result = target.GetAutoById(1);
+            MainWindow = new MainWindow();
+            KundeViewModel vmKunde = new KundeViewModel();
+            MainWindow.DataContext = vmKunde;
+            MainWindow.Show();
         }
     }
 }

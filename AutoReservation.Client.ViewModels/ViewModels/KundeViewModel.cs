@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace AutoReservation.Client.ViewModels
 {
-    class KundeViewModel : INotifyPropertyChanged
+    public class KundeViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -20,7 +20,7 @@ namespace AutoReservation.Client.ViewModels
         private byte[] _rowVersion;
         private string _vorname;
 
-        KundeViewModel()
+        public KundeViewModel()
         {
             SaveCommand = new RelayCommand(Save);
         }

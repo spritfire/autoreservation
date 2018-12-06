@@ -96,6 +96,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\AutoReservation.Client.ViewModels\AutoReservation.Client.ViewModels.csproj">
+      <Project>{1b3f34be-8c4d-4134-9d4a-85c0e4ceb93d}</Project>
+      <Name>AutoReservation.Client.ViewModels</Name>
+    </ProjectReference>
     <ProjectReference Include="..\AutoReservation.Common\AutoReservation.Common.csproj">
       <Project>{22972439-3fff-41d2-b5ae-6c06abc66eb4}</Project>
       <Name>AutoReservation.Common</Name>
