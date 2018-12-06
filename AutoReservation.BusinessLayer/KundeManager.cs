@@ -29,15 +29,8 @@ namespace AutoReservation.BusinessLayer
         {
             using (AutoReservationContext context = new AutoReservationContext())
             {
-                try
-                {
-                    context.Entry(kunde).State = EntityState.Added;
-                    context.SaveChanges();
-                }
-                catch (DbUpdateException e)
-                {
-                    throw CreateOptimisticConcurrencyException(context, kunde);
-                }
+                context.Entry(kunde).State = EntityState.Added;
+                context.SaveChanges();
             }
         }
 
