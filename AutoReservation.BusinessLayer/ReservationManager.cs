@@ -32,20 +32,20 @@ namespace AutoReservation.BusinessLayer
         {
             using (AutoReservationContext context = new AutoReservationContext())
             {
-                try
+                if (!isDateRangeValid(reservation.Von, reservation.Bis))
                 {
-                    if (isDateRangeValid(reservation.Von, reservation.Bis) &&
-                        isAutoAvailable(reservation.Auto.Id, reservation.Von, reservation.Bis))
-                    {
-                    }
+                    throw new InvalidDateRangeException("No valid reservation dates", reservation.Von,
+                        reservation.Bis);
+                }
 
-                    context.Entry(reservation).State = EntityState.Added;
-                    context.SaveChanges();
-                }
-                catch (DbUpdateException e)
+                if (isAutoAvailable(reservation.Auto.Id, reservation.Von, reservation.Bis))
                 {
-                    throw CreateOptimisticConcurrencyException(context, reservation);
+                    throw new AutoUnavailableException(
+                        $"The car {reservation.Auto.Marke} is not available in this date range from reservation");
                 }
+
+                context.Entry(reservation).State = EntityState.Added;
+                context.SaveChanges();
             }
         }
 
@@ -57,12 +57,14 @@ namespace AutoReservation.BusinessLayer
                 {
                     if (!isDateRangeValid(reservation.Von, reservation.Bis))
                     {
-                        throw new InvalidDateRangeException("No valid reservation dates", reservation.Von, reservation.Bis);
+                        throw new InvalidDateRangeException("No valid reservation dates", reservation.Von,
+                            reservation.Bis);
                     }
 
                     if (isAutoAvailable(reservation.Auto.Id, reservation.Von, reservation.Bis))
                     {
-                        throw new AutoUnavailableException($"The car {reservation.Auto.Marke} is not available in this date range from reservation");
+                        throw new AutoUnavailableException(
+                            $"The car {reservation.Auto.Marke} is not available in this date range from reservation");
                     }
 
                     context.Entry(reservation).State = EntityState.Modified;
