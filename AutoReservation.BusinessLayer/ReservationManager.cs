@@ -23,8 +23,15 @@ namespace AutoReservation.BusinessLayer
         {
             using (AutoReservationContext context = new AutoReservationContext())
             {
-                return context.Reservationen.Include(r => r.Auto).Include(r => r.Kunde)
-                    .Single(r => r.ReservationsNr == reservationNr);
+                try
+                {
+                    return context.Reservationen.Include(r => r.Auto).Include(r => r.Kunde)
+                        .Single(r => r.ReservationsNr == reservationNr);
+                }
+                catch (InvalidOperationException e)
+                {
+                    return null;
+                }
             }
         }
 
@@ -41,7 +48,7 @@ namespace AutoReservation.BusinessLayer
                 if (!isAutoAvailable(reservation.ReservationsNr, reservation.AutoId, reservation.Von, reservation.Bis))
                 {
                     throw new AutoUnavailableException(
-                        $"The car {reservation.Auto.Marke} is not available in this date range from reservation");
+                        $"The car {reservation.AutoId} is not available in this date range from reservation");
                 }
 
                 context.Entry(reservation).State = EntityState.Added;
@@ -65,7 +72,7 @@ namespace AutoReservation.BusinessLayer
                         reservation.Bis))
                     {
                         throw new AutoUnavailableException(
-                            $"The car {reservation.Auto.Marke} is not available in this date range from reservation");
+                            $"The car {reservation.AutoId} is not available in this date range from reservation");
                     }
 
                     context.Entry(reservation).State = EntityState.Modified;
@@ -91,7 +98,7 @@ namespace AutoReservation.BusinessLayer
                     where reservation.AutoId == autoId &&
                           reservation.ReservationsNr != reservationNr &&
                           ((von <= reservation.Von && bis > reservation.Von) ||
-                          (von >= reservation.Von && von < reservation.Bis))
+                           (von >= reservation.Von && von < reservation.Bis))
                     select reservation);
                 return !count.Any();
             }
