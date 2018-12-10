@@ -22,14 +22,7 @@ namespace AutoReservation.BusinessLayer
         {
             using (AutoReservationContext context = new AutoReservationContext())
             {
-                try
-                {
-                    return context.Kunden.Single(k => k.Id == id);
-                }
-                catch (InvalidOperationException e)
-                {
-                    return null;
-                }
+                return context.Kunden.FirstOrDefault(k => k.Id == id);
             }
         }
 

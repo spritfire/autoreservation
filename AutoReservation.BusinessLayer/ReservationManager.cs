@@ -23,15 +23,8 @@ namespace AutoReservation.BusinessLayer
         {
             using (AutoReservationContext context = new AutoReservationContext())
             {
-                try
-                {
-                    return context.Reservationen.Include(r => r.Auto).Include(r => r.Kunde)
-                        .Single(r => r.ReservationsNr == reservationNr);
-                }
-                catch (InvalidOperationException e)
-                {
-                    return null;
-                }
+                return context.Reservationen.Include(r => r.Auto).Include(r => r.Kunde)
+                    .FirstOrDefault(r => r.ReservationsNr == reservationNr);
             }
         }
 
