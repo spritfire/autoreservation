@@ -15,7 +15,7 @@ namespace AutoReservation.BusinessLayer
         {
             using (AutoReservationContext context = new AutoReservationContext())
             {
-                return context.Reservationen.ToList();
+                return context.Reservationen.Include(r => r.Auto).Include(r => r.Kunde).ToList();
             }
         }
 
@@ -23,8 +23,15 @@ namespace AutoReservation.BusinessLayer
         {
             using (AutoReservationContext context = new AutoReservationContext())
             {
-                return context.Reservationen.Single(r => r.ReservationsNr == reservationNr);
-                return new Reservation();
+                try
+                {
+                    return context.Reservationen.Include(r => r.Auto).Include(r => r.Kunde)
+                        .Single(r => r.ReservationsNr == reservationNr);
+                }
+                catch (InvalidOperationException e)
+                {
+                    return null;
+                }
             }
         }
 
@@ -38,10 +45,10 @@ namespace AutoReservation.BusinessLayer
                         reservation.Bis);
                 }
 
-                if (isAutoAvailable(reservation.Auto.Id, reservation.Von, reservation.Bis))
+                if (!isAutoAvailable(reservation.ReservationsNr, reservation.AutoId, reservation.Von, reservation.Bis))
                 {
                     throw new AutoUnavailableException(
-                        $"The car {reservation.Auto.Marke} is not available in this date range from reservation");
+                        $"The car {reservation.AutoId} is not available in this date range from reservation");
                 }
 
                 context.Entry(reservation).State = EntityState.Added;
@@ -61,10 +68,11 @@ namespace AutoReservation.BusinessLayer
                             reservation.Bis);
                     }
 
-                    if (isAutoAvailable(reservation.Auto.Id, reservation.Von, reservation.Bis))
+                    if (!isAutoAvailable(reservation.ReservationsNr, reservation.AutoId, reservation.Von,
+                        reservation.Bis))
                     {
                         throw new AutoUnavailableException(
-                            $"The car {reservation.Auto.Marke} is not available in this date range from reservation");
+                            $"The car {reservation.AutoId} is not available in this date range from reservation");
                     }
 
                     context.Entry(reservation).State = EntityState.Modified;
@@ -82,16 +90,17 @@ namespace AutoReservation.BusinessLayer
             return (von.Date < bis.Date) && (bis.Date - von.Date).TotalHours >= 24;
         }
 
-        private bool isAutoAvailable(int autoId, DateTime von, DateTime bis)
+        private bool isAutoAvailable(int reservationNr, int autoId, DateTime von, DateTime bis)
         {
             using (AutoReservationContext context = new AutoReservationContext())
             {
                 var count = (from reservation in context.Reservationen
-                    where reservation.Auto.Id == autoId &&
-                          (reservation.Von < von && reservation.Bis >= von) ||
-                          (reservation.Von <= bis && reservation.Bis > bis)
-                    select reservation).Count();
-                return count == 0;
+                    where reservation.AutoId == autoId &&
+                          reservation.ReservationsNr != reservationNr &&
+                          ((von <= reservation.Von && bis > reservation.Von) ||
+                           (von >= reservation.Von && von < reservation.Bis))
+                    select reservation);
+                return !count.Any();
             }
         }
 

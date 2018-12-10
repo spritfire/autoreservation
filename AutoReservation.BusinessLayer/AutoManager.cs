@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using AutoReservation.BusinessLayer.Exceptions;
@@ -23,7 +24,14 @@ namespace AutoReservation.BusinessLayer
         {
             using (AutoReservationContext context = new AutoReservationContext())
             {
-                return context.Autos.Single(a => a.Id == id);
+                try
+                {
+                    return context.Autos.Single(a => a.Id == id);
+                }
+                catch (InvalidOperationException e)
+                {
+                    return null;
+                }
             }
         }
 
