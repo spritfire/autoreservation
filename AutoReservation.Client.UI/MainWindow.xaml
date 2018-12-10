@@ -9,31 +9,13 @@
     <Grid>
         <TabControl>
             <TabItem Header="Kunden"/>
-            <ListBox ItemsSource="{Binding }">
-                
-            </ListBox>
+            <ListBox ItemsSource="{Binding KundenListe}"/>
+
             <TabItem Header="Autos"/>
-            <Grid>
-                <TabControl>
-                    <TabItem Header="Kunden"/>
-                    <ListBox ItemsSource="{Binding }">
-
-                    </ListBox>
-                    <TabItem Header="Autos"/>
-                    <TabItem Header="Reservationen"/>
-                </TabControl>
-            </Grid>
+            <ListBox ItemsSource="{Binding AutoListe}"/>
+            
             <TabItem Header="Reservationen"/>
-            <Grid>
-                <TabControl>
-                    <TabItem Header="Kunden"/>
-                    <ListBox ItemsSource="{Binding }">
-
-                    </ListBox>
-                    <TabItem Header="Autos"/>
-                    <TabItem Header="Reservationen"/>
-                </TabControl>
-            </Grid>
+            <ListBox ItemsSource="{Binding ReservationsListe}"/>
         </TabControl>
     </Grid>
 </Window>

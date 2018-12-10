@@ -12,9 +12,9 @@ namespace AutoReservation.Client.ViewModels
     {
         public void InitializeAutoMapper()
         {
-            Mapper.Initialize(cfg => cfg.CreateMap<KundeViewModel, KundeDto>());
-            Mapper.Initialize(cfg => cfg.CreateMap<AutoViewModel, AutoDto>());
-            Mapper.Initialize(cfg => cfg.CreateMap<ReservationViewModel, ReservationDto>());
+            Mapper.Initialize(cfg => cfg.CreateMap<KundeDetailViewModel, KundeDto>());
+            Mapper.Initialize(cfg => cfg.CreateMap<AutoDetailViewModel, AutoDto>());
+            Mapper.Initialize(cfg => cfg.CreateMap<ReservationDetailViewModel, ReservationDto>());
         }
     }
 }

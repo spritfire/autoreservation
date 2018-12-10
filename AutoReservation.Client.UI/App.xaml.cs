@@ -22,8 +22,11 @@ namespace AutoReservation.Client.UI
             ChannelFactory<IAutoReservationService> channelFactory = new ChannelFactory<IAutoReservationService>("AutoReservationService");
             var target = channelFactory.CreateChannel();
             MainWindow = new MainWindow();
-            KundeViewModel vmKunde = new KundeViewModel();
-            MainWindow.DataContext = vmKunde;
+
+            KundeListViewModel klvm = new KundeListViewModel(target);
+
+            MainWindow.DataContext = klvm;
+
             MainWindow.Show();
         }
     }

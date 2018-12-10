@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace AutoReservation.Client.ViewModels
 {
-    public class KundeViewModel : INotifyPropertyChanged
+    public class KundeDetailViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -28,7 +28,7 @@ namespace AutoReservation.Client.ViewModels
 
         private IAutoReservationService _target;
 
-        public KundeViewModel(IAutoReservationService target)
+        public KundeDetailViewModel(IAutoReservationService target)
         {
             _target = target;
             InsertKundeCommand = new RelayCommand(InsertKunde);

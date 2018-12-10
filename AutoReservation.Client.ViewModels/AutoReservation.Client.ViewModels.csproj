@@ -53,7 +53,7 @@
     <Compile Include="ViewModels\AutoDetailViewModel.cs" />
     <Compile Include="ViewModels\AutoListViewModel.cs" />
     <Compile Include="ViewModels\KundeListViewModel.cs" />
-    <Compile Include="ViewModels\KundeViewModel.cs" />
+    <Compile Include="ViewModels\KundeDetailViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\ReservationDetailViewModel.cs" />
@@ -66,6 +66,10 @@
     <ProjectReference Include="..\AutoReservation.Common\AutoReservation.Common.csproj">
       <Project>{22972439-3fff-41d2-b5ae-6c06abc66eb4}</Project>
       <Name>AutoReservation.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\AutoReservation.Service.Wcf\AutoReservation.Service.Wcf.csproj">
+      <Project>{73F6E950-15A9-460D-993B-DFE469A9E286}</Project>
+      <Name>AutoReservation.Service.Wcf</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
