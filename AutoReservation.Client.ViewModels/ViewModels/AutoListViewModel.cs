@@ -6,18 +6,36 @@ using System.Threading.Tasks;
 using System.Collections.ObjectModel;
 using AutoReservation.Common.DataTransferObjects;
 using AutoReservation.Common.Interfaces;
+using System.ComponentModel;
 
 namespace AutoReservation.Client.ViewModels.ViewModels
 {
-    class AutoListViewModel
+    public class AutoListViewModel : IViewModel, INotifyPropertyChanged
     {
-        private List<AutoDto> AutoListe { get; set; }
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        private ObservableCollection<AutoDto> _autosListe { get; set; }
         private IAutoReservationService _target;
 
         public AutoListViewModel(IAutoReservationService target)
         {
             _target = target;
-            AutoListe = target.AutoList();
+            _autosListe = new ObservableCollection<AutoDto>(target.AutoList());
+        }
+
+        public ObservableCollection<AutoDto> AutosListe
+        {
+            get { return _autosListe; }
+            set
+            {
+                _autosListe = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("AutosListe"));
+            }
+        }
+
+        public void RefreshList()
+        {
+            AutosListe = new ObservableCollection<AutoDto>(_target.AutoList());
         }
     }
 }

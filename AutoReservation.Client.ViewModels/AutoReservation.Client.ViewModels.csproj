@@ -49,9 +49,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AutoMapperInitializer.cs" />
+    <Compile Include="INavigationService.cs" />
     <Compile Include="RelayCommand.cs" />
     <Compile Include="ViewModels\AutoDetailViewModel.cs" />
     <Compile Include="ViewModels\AutoListViewModel.cs" />
+    <Compile Include="ViewModels\IViewModel.cs" />
     <Compile Include="ViewModels\KundeListViewModel.cs" />
     <Compile Include="ViewModels\KundeDetailViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

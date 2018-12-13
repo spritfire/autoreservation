@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using AutoReservation.Client.ViewModels.ViewModels;
 using AutoReservation.Common.DataTransferObjects;
 using System;
 using System.Collections.Generic;

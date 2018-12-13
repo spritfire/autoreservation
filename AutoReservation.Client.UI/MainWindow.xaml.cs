@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AutoReservation.Client.ViewModels.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,6 +24,12 @@ namespace AutoReservation.Client.UI
         public MainWindow()
         {
             InitializeComponent();
+        }
+        
+        private void ListBox_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            var vm = (MainViewModel)DataContext;
+            vm.openSelectedKundeWindowCommand.Execute(null);
         }
     }
 }

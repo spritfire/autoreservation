@@ -7,15 +7,45 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        <TabControl>
-            <TabItem Header="Kunden"/>
-            <ListBox ItemsSource="{Binding KundenListe}"/>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="390" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <TabControl Grid.Column="0" Grid.Row="0">
+            <TabItem Header="Reservationen">
+                <DockPanel>
+                    <Button DockPanel.Dock="Bottom" Command="{Binding openDetailReservationWindowCommand}">Neue Reservation</Button>
+                    <ListBox ItemsSource="{Binding ReservationenListe}"/>
+                </DockPanel>
+            </TabItem>
 
-            <TabItem Header="Autos"/>
-            <ListBox ItemsSource="{Binding AutoListe}"/>
-            
-            <TabItem Header="Reservationen"/>
-            <ListBox ItemsSource="{Binding ReservationsListe}"/>
+            <TabItem Header="Autos">
+                <DockPanel>
+                    <Button DockPanel.Dock="Bottom" Command="{Binding openDetailAutoWindowCommand}">Neues Auto</Button>
+                    <ListBox ItemsSource="{Binding AutosListe}"/>
+                </DockPanel>
+            </TabItem>
+
+            <TabItem Header="Kunden">
+                <DockPanel>
+                    <Button DockPanel.Dock="Bottom" Command="{Binding openDetailKundeWindowCommand}">Neuer Kunde</Button>
+                    <ListBox ItemsSource="{Binding Klvm.KundenListe}" SelectedItem="{Binding Klvm.SelectedKunde}" MouseDoubleClick="ListBox_MouseDoubleClick">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{Binding Path=Nachname}" />
+                                    <TextBlock Text="{Binding Path=Vorname}" />
+                                    <TextBlock Text="{Binding Path=Geburtsdatum}" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </DockPanel>
+            </TabItem>
         </TabControl>
+        <Button Grid.Column="0" Grid.Row="1" VerticalAlignment="Bottom">Listen aktualisieren</Button>
     </Grid>
 </Window>

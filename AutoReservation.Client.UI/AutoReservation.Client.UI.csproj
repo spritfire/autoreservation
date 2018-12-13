@@ -56,6 +56,19 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="WpfNavigationService.cs" />
+    <Page Include="DetailWindows\AutoDetailWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="DetailWindows\KundeDetailWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="DetailWindows\ReservationDetailWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -63,6 +76,15 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DetailWindows\AutoDetailWindow.xaml.cs">
+      <DependentUpon>AutoDetailWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="DetailWindows\KundeDetailWindow.xaml.cs">
+      <DependentUpon>KundeDetailWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="DetailWindows\ReservationDetailWindow.xaml.cs">
+      <DependentUpon>ReservationDetailWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>

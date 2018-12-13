@@ -8,7 +8,8 @@ using System.Linq;
 using System.ServiceModel;
 using System.Threading.Tasks;
 using System.Windows;
-using AutoReservation.Client.ViewModels;
+using AutoReservation.Client.ViewModels.ViewModels;
+using AutoReservation.Client.ViewModels.Navigation;
 
 namespace AutoReservation.Client.UI
 {
@@ -22,10 +23,10 @@ namespace AutoReservation.Client.UI
             ChannelFactory<IAutoReservationService> channelFactory = new ChannelFactory<IAutoReservationService>("AutoReservationService");
             var target = channelFactory.CreateChannel();
             MainWindow = new MainWindow();
+            INavigationService navService = new WpfNavigationService();
 
-            KundeListViewModel klvm = new KundeListViewModel(target);
-
-            MainWindow.DataContext = klvm;
+            MainViewModel mvm = new MainViewModel(navService, target);
+            MainWindow.DataContext = mvm;
 
             MainWindow.Show();
         }

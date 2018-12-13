@@ -1,4 +1,5 @@
-﻿using AutoReservation.Common.DataTransferObjects;
+﻿using AutoReservation.Client.ViewModels.Navigation;
+using AutoReservation.Common.DataTransferObjects;
 using AutoReservation.Common.DataTransferObjects.Faults;
 using AutoReservation.Common.Interfaces;
 using System;
@@ -10,14 +11,14 @@ using System.ServiceModel;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AutoReservation.Client.ViewModels
+namespace AutoReservation.Client.ViewModels.ViewModels
 {
-    public class KundeDetailViewModel : INotifyPropertyChanged
+    public class KundeDetailViewModel : INotifyPropertyChanged, IViewModel
     {
         public event PropertyChangedEventHandler PropertyChanged;
+        private INavigationService _navService;
 
-        public RelayCommand InsertKundeCommand { get; set; }
-        public RelayCommand UpdateKundeCommand { get; set; }
+        public RelayCommand SaveKundeCommand { get; set; }
         public RelayCommand RemoveKundeCommand { get; set; }
 
         private DateTime _geburtsdatum;
@@ -25,14 +26,17 @@ namespace AutoReservation.Client.ViewModels
         private string _nachname;
         private byte[] _rowVersion;
         private string _vorname;
+        
+        public KundeListViewModel Klvm { get; set; }
 
         private IAutoReservationService _target;
 
-        public KundeDetailViewModel(IAutoReservationService target)
+        public KundeDetailViewModel(INavigationService navService, IAutoReservationService target, KundeListViewModel klvm)
         {
+            _navService = navService;
             _target = target;
-            InsertKundeCommand = new RelayCommand(InsertKunde);
-            UpdateKundeCommand = new RelayCommand(UpdateKunde);
+            Klvm = klvm;
+            SaveKundeCommand = new RelayCommand(SaveKunde);
             RemoveKundeCommand = new RelayCommand(RemoveKunde);
         }
 
@@ -68,7 +72,7 @@ namespace AutoReservation.Client.ViewModels
 
         private bool SetProperty<T>(ref T field, T value, [CallerMemberName] string name = null)
         {
-            if (!Equals(field, value))
+            if (Equals(field, value))
             {
                 return false;
             }
@@ -77,34 +81,36 @@ namespace AutoReservation.Client.ViewModels
             return true;
         }
 
-        public void InsertKunde()
+        public void SaveKunde()
         {
-            _target.InsertKunde(new KundeDto
+            if (_rowVersion == null)
             {
-                Geburtsdatum = _geburtsdatum,
-                Nachname = _nachname,
-                RowVersion = _rowVersion,
-                Vorname = _vorname
-            });
-        }
-
-        public void UpdateKunde()
-        {
-            try
-            {
-                _target.UpdateKunde(new KundeDto
+                _target.InsertKunde(new KundeDto
                 {
                     Geburtsdatum = _geburtsdatum,
                     Nachname = _nachname,
-                    Id = _id,
-                    RowVersion = _rowVersion,
                     Vorname = _vorname
                 });
-            }
-            catch (FaultException<OptimisticConcurrencyFault> e)
+            } else
             {
-                //Handle Fault
+                try
+                {
+                    _target.UpdateKunde(new KundeDto
+                    {
+                        Geburtsdatum = _geburtsdatum,
+                        Nachname = _nachname,
+                        Id = _id,
+                        RowVersion = _rowVersion,
+                        Vorname = _vorname
+                    });
+                }
+                catch (FaultException<OptimisticConcurrencyFault> e)
+                {
+                    //Handle Fault
+                }
             }
+            _navService.CloseWindow();
+            Klvm.RefreshList();
         }
 
         public void RemoveKunde()
@@ -124,6 +130,7 @@ namespace AutoReservation.Client.ViewModels
             {
                 //Handle Fault
             }
+            Klvm.RefreshList();
         }
     }
 }
