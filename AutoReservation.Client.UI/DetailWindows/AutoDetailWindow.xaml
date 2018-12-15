@@ -6,7 +6,29 @@
         xmlns:local="clr-namespace:AutoReservation.Client.UI.DetailWindows"
         mc:Ignorable="d"
         Title="AutoDetailWindow" Height="450" Width="800">
-    <Grid>
-        <TextBlock>This is the AutoDetailWindow</TextBlock>
-    </Grid>
+    <StackPanel>
+        <TextBlock Text="Auto" FontSize="28" />
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="100" />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <TextBlock Text="Marke:" Grid.Column="0" Grid.Row="0" />
+            <TextBox Grid.Column="1" Grid.Row="0" Text="{Binding Marke}" />
+            <TextBlock Text="AutoKlasse:" Grid.Column="0" Grid.Row="1" />
+            <ComboBox Grid.Column="1" Grid.Row="1" ItemsSource="{Binding Path=AutoKlassen}" SelectedValue="{Binding AutoKlasseAsString}" />
+            <TextBlock Text="Basistarif:" Grid.Column="0" Grid.Row="2" />
+            <TextBox Grid.Column="1" Grid.Row="2" Text="{Binding Basistarif}" />
+            <TextBlock Text="Tagestarif:" Grid.Column="0" Grid.Row="3" />
+            <TextBox Grid.Column="1" Grid.Row="3" Text="{Binding Tagestarif}" />
+        </Grid>
+        <Button Command="{Binding SaveAutoCommand}">Speichern</Button>
+        <Button Command="{Binding RemoveAutoCommand}">Auto löschen</Button>
+    </StackPanel>
 </Window>

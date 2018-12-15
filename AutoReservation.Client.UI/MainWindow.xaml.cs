@@ -26,10 +26,22 @@ namespace AutoReservation.Client.UI
             InitializeComponent();
         }
         
-        private void ListBox_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        private void SelectedKundeDoubleClick(object sender, MouseButtonEventArgs e)
         {
             var vm = (MainViewModel)DataContext;
-            vm.openSelectedKundeWindowCommand.Execute(null);
+            vm.OpenSelectedKundeWindowCommand.Execute(null);
+        }
+
+        private void SelectedAutoDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            var vm = (MainViewModel)DataContext;
+            vm.OpenSelectedAutoWindowCommand.Execute(null);
+        }
+
+        private void SelectedReservationDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            var vm = (MainViewModel)DataContext;
+            vm.OpenSelectedReservationWindowCommand.Execute(null);
         }
     }
 }

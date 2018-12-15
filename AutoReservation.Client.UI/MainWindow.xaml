@@ -7,32 +7,50 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition />
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="390" />
-            <RowDefinition />
-        </Grid.RowDefinitions>
-        <TabControl Grid.Column="0" Grid.Row="0">
+        <TabControl>
             <TabItem Header="Reservationen">
                 <DockPanel>
                     <Button DockPanel.Dock="Bottom" Command="{Binding openDetailReservationWindowCommand}">Neue Reservation</Button>
-                    <ListBox ItemsSource="{Binding ReservationenListe}"/>
+                    <ListBox ItemsSource="{Binding CurrentReservationListViewModel.ReservationenListe}" SelectedItem="{Binding CurrentReservationListViewModel.SelectedReservation}" MouseDoubleClick="SelectedReservationDoubleClick">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Vertical">
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="{Binding Path=Von}" />
+                                        <TextBlock Text="{Binding Path=Bis}" />
+                                    </StackPanel>
+                                    <TextBlock Text="{Binding Path=Auto}" />
+                                    <TextBlock Text="{Binding Path=Kunde}" />
+                                    <Separator />
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
                 </DockPanel>
             </TabItem>
 
             <TabItem Header="Autos">
                 <DockPanel>
                     <Button DockPanel.Dock="Bottom" Command="{Binding openDetailAutoWindowCommand}">Neues Auto</Button>
-                    <ListBox ItemsSource="{Binding AutosListe}"/>
+                    <ListBox ItemsSource="{Binding CurrentAutoListViewModel.AutosListe}" SelectedItem="{Binding CurrentAutoListViewModel.SelectedAuto}" MouseDoubleClick="SelectedAutoDoubleClick">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{Binding Path=Marke}" />
+                                    <TextBlock Text="{Binding Path=AutoKlasse}" />
+                                    <TextBlock Text="{Binding Path=Basistarif}" />
+                                    <TextBlock Text="{Binding Path=Tagestarif}" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
                 </DockPanel>
             </TabItem>
 
             <TabItem Header="Kunden">
                 <DockPanel>
                     <Button DockPanel.Dock="Bottom" Command="{Binding openDetailKundeWindowCommand}">Neuer Kunde</Button>
-                    <ListBox ItemsSource="{Binding Klvm.KundenListe}" SelectedItem="{Binding Klvm.SelectedKunde}" MouseDoubleClick="ListBox_MouseDoubleClick">
+                    <ListBox ItemsSource="{Binding CurrentKundeListViewModel.KundenListe}" SelectedItem="{Binding CurrentKundeListViewModel.SelectedKunde}" MouseDoubleClick="SelectedKundeDoubleClick">
                         <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
@@ -46,6 +64,5 @@
                 </DockPanel>
             </TabItem>
         </TabControl>
-        <Button Grid.Column="0" Grid.Row="1" VerticalAlignment="Bottom">Listen aktualisieren</Button>
     </Grid>
 </Window>

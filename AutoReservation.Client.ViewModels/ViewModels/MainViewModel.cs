@@ -1,11 +1,6 @@
 ﻿using AutoReservation.Client.ViewModels.Navigation;
 using AutoReservation.Common.DataTransferObjects;
 using AutoReservation.Common.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AutoReservation.Client.ViewModels.ViewModels
 {
@@ -14,55 +9,57 @@ namespace AutoReservation.Client.ViewModels.ViewModels
         private INavigationService _navService;
 
         private IAutoReservationService _target;
-        public KundeListViewModel Klvm { get; set; }
-        public AutoListViewModel Alvm { get; set; }
-        public ReservationListViewModel Rlvm { get; set; }
+        public KundeListViewModel CurrentKundeListViewModel { get; set; }
+        public AutoListViewModel CurrentAutoListViewModel { get; set; }
+        public ReservationListViewModel CurrentReservationListViewModel { get; set; }
 
-        public RelayCommand openDetailKundeWindowCommand { get; set; }
-        public RelayCommand openDetailAutoWindowCommand { get; set; }
-        public RelayCommand openDetailReservationWindowCommand { get; set; }
-        public RelayCommand refreshListsCommand { get; set; }
-        public RelayCommand openSelectedKundeWindowCommand { get; set; }
+        public RelayCommand OpenDetailKundeWindowCommand { get; set; }
+        public RelayCommand OpenDetailAutoWindowCommand { get; set; }
+        public RelayCommand OpenDetailReservationWindowCommand { get; set; }
+        public RelayCommand OpenSelectedKundeWindowCommand { get; set; }
+        public RelayCommand OpenSelectedAutoWindowCommand { get; set; }
+        public RelayCommand OpenSelectedReservationWindowCommand { get; set; }
 
         public MainViewModel(INavigationService navService, IAutoReservationService target)
         {
             _navService = navService;
             _target = target;
-            Rlvm = new ReservationListViewModel(target);
-            Alvm = new AutoListViewModel(target);
-            Klvm = new KundeListViewModel(target);
+            CurrentReservationListViewModel = new ReservationListViewModel(target);
+            CurrentAutoListViewModel = new AutoListViewModel(target);
+            CurrentKundeListViewModel = new KundeListViewModel(target);
 
-            openDetailKundeWindowCommand = new RelayCommand(openDetailKundeWindow);
-            openDetailAutoWindowCommand = new RelayCommand(openDetailAutoWindow);
-            openDetailReservationWindowCommand = new RelayCommand(openDetailReservationWindow);
-            openSelectedKundeWindowCommand = new RelayCommand(openSelectedKundeWindow);
-            refreshListsCommand = new RelayCommand(refreshLists);
+            OpenDetailKundeWindowCommand = new RelayCommand(OpenDetailKundeWindow);
+            OpenDetailAutoWindowCommand = new RelayCommand(OpenDetailAutoWindow);
+            OpenDetailReservationWindowCommand = new RelayCommand(OpenDetailReservationWindow);
+            OpenSelectedKundeWindowCommand = new RelayCommand(OpenSelectedKundeWindow);
+            OpenSelectedAutoWindowCommand = new RelayCommand(OpenSelectedAutoWindow);
+            OpenSelectedReservationWindowCommand = new RelayCommand(OpenSelectedReservationWindow);
         }
 
-        private void openDetailKundeWindow()
+        private void OpenDetailKundeWindow()
         {
-            var vm = new KundeDetailViewModel(_navService, _target, Klvm);
+            var vm = new KundeDetailViewModel(_navService, _target, CurrentKundeListViewModel);
             _navService.OpenWindow("KundeDetailWindow", vm);
         }
 
-        private void openDetailAutoWindow()
+        private void OpenDetailAutoWindow()
         {
-            var vm = new AutoDetailViewModel(_navService, _target);
+            var vm = new AutoDetailViewModel(_navService, _target, CurrentAutoListViewModel);
             _navService.OpenWindow("AutoDetailWindow", vm);
         }
 
-        private void openDetailReservationWindow()
+        private void OpenDetailReservationWindow()
         {
-            var vm = new ReservationDetailViewModel(_navService, _target);
+            var vm = new ReservationDetailViewModel(_navService, _target, CurrentReservationListViewModel);
             _navService.OpenWindow("ReservationDetailWindow", vm);
         }
 
-        private void openSelectedKundeWindow()
+        private void OpenSelectedKundeWindow()
         {
-            KundeDto kunde = Klvm.SelectedKunde;
+            KundeDto kunde = CurrentKundeListViewModel.SelectedKunde;
             if (kunde != null)
             {
-                var vm = new KundeDetailViewModel(_navService, _target, Klvm)
+                var vm = new KundeDetailViewModel(_navService, _target, CurrentKundeListViewModel)
                 {
                     Geburtsdatum = kunde.Geburtsdatum,
                     Id = kunde.Id,
@@ -74,8 +71,40 @@ namespace AutoReservation.Client.ViewModels.ViewModels
             }
         }
 
-        private void refreshLists()
+        private void OpenSelectedAutoWindow()
         {
+            AutoDto auto = CurrentAutoListViewModel.SelectedAuto;
+            if (auto != null)
+            {
+                var vm = new AutoDetailViewModel(_navService, _target, CurrentAutoListViewModel)
+                {
+                    Basistarif = auto.Basistarif,
+                    Id = auto.Id,
+                    Marke = auto.Marke,
+                    RowVersion = auto.RowVersion,
+                    Tagestarif = auto.Tagestarif,
+                    AutoKlasse = auto.AutoKlasse
+                };
+                _navService.OpenWindow("AutoDetailWindow", vm);
+            }
+        }
+
+        private void OpenSelectedReservationWindow()
+        {
+            ReservationDto reservation = CurrentReservationListViewModel.SelectedReservation;
+            if (reservation != null)
+            {
+                var vm = new ReservationDetailViewModel(_navService, _target, CurrentReservationListViewModel)
+                {
+                    Bis = reservation.Bis,
+                    ReservationNr = reservation.ReservationsNr,
+                    RowVersion = reservation.RowVersion,
+                    Von = reservation.Von,
+                    Auto = reservation.Auto,
+                    Kunde = reservation.Kunde
+                };
+                _navService.OpenWindow("ReservationDetailWindow", vm);
+            }
         }
     }
 }

@@ -8,19 +8,15 @@ using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.ServiceModel;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AutoReservation.Client.ViewModels.ViewModels
 {
     public class AutoDetailViewModel : IViewModel
     {
         public event PropertyChangedEventHandler PropertyChanged;
-
         private INavigationService _navService;
 
-        public RelayCommand InsertAutoCommand { get; set; }
-        public RelayCommand UpdateAutoCommand { get; set; }
+        public RelayCommand SaveAutoCommand { get; set; }
         public RelayCommand RemoveAutoCommand { get; set; }
 
         private int _basistarif;
@@ -29,16 +25,21 @@ namespace AutoReservation.Client.ViewModels.ViewModels
         private byte[] _rowVersion;
         private int _tagestarif;
         private AutoKlasse _autoKlasse;
+        private string _autoKlasseAsString;
+
+        public AutoListViewModel CurrentAutoListViewModel { get; set; }
+        public List<string> AutoKlassen { get; set; }
 
         private IAutoReservationService _target;
 
-        public AutoDetailViewModel(INavigationService navService, IAutoReservationService target)
+        public AutoDetailViewModel(INavigationService navService, IAutoReservationService target, AutoListViewModel currentAutoListViewModel)
         {
             _navService = navService;
             _target = target;
-            InsertAutoCommand = new RelayCommand(InsertAuto);
-            UpdateAutoCommand = new RelayCommand(UpdateAuto);
+            CurrentAutoListViewModel = currentAutoListViewModel;
+            SaveAutoCommand = new RelayCommand(SaveAuto);
             RemoveAutoCommand = new RelayCommand(RemoveAuto);
+            AutoKlassen = Enum.GetValues(typeof(AutoKlasse)).Cast<AutoKlasse>().Select(v => v.ToString()).ToList();
         }
 
         public int Basistarif
@@ -74,7 +75,21 @@ namespace AutoReservation.Client.ViewModels.ViewModels
         public AutoKlasse AutoKlasse
         {
             get { return _autoKlasse; }
-            set { SetProperty(ref _autoKlasse, value); }
+            set
+            {
+                _autoKlasseAsString = value.ToString();
+                SetProperty(ref _autoKlasse, value);
+            }
+        }
+
+        public string AutoKlasseAsString
+        {
+            get { return _autoKlasseAsString; }
+            set
+            {
+                _autoKlasseAsString = value;
+                AutoKlasse = (AutoKlasse)Enum.Parse(typeof(AutoKlasse), value);
+            }
         }
 
         private bool SetProperty<T>(ref T field, T value, [CallerMemberName] string name = null)
@@ -88,7 +103,18 @@ namespace AutoReservation.Client.ViewModels.ViewModels
             return true;
         }
 
-        public void InsertAuto()
+        private void SaveAuto()
+        {
+            if (_rowVersion == null)
+            {
+                InsertAuto();
+            } else
+            {
+                UpdateAuto();
+            }
+        }
+
+        private void InsertAuto()
         {
             _target.InsertAuto(new AutoDto
             {
@@ -97,9 +123,10 @@ namespace AutoReservation.Client.ViewModels.ViewModels
                 Tagestarif = _tagestarif,
                 AutoKlasse = _autoKlasse
             });
+            onClose();
         }
 
-        public void UpdateAuto()
+        private void UpdateAuto()
         {
             try
             {
@@ -117,26 +144,37 @@ namespace AutoReservation.Client.ViewModels.ViewModels
             {
                 //Handle Fault
             }
+            onClose();
         }
 
-        public void RemoveAuto()
+        private void RemoveAuto()
         {
-            try
+            if (_rowVersion != null)
             {
-                _target.InsertAuto(new AutoDto
+                try
                 {
-                    Basistarif = _basistarif,
-                    Id = _id,
-                    Marke = _marke,
-                    RowVersion = _rowVersion,
-                    Tagestarif = _tagestarif,
-                    AutoKlasse = _autoKlasse
-                });
+                    _target.RemoveAuto(new AutoDto
+                    {
+                        Basistarif = _basistarif,
+                        Id = _id,
+                        Marke = _marke,
+                        RowVersion = _rowVersion,
+                        Tagestarif = _tagestarif,
+                        AutoKlasse = _autoKlasse
+                    });
+                }
+                catch (FaultException<OptimisticConcurrencyFault> e)
+                {
+                    //Handle Fault
+                }
             }
-            catch (FaultException<OptimisticConcurrencyFault> e)
-            {
-                //Handle Fault
-            }
+            onClose();
+        }
+
+        private void onClose()
+        {
+            _navService.CloseWindow();
+            CurrentAutoListViewModel.RefreshList();
         }
     }
 }

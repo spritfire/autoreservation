@@ -16,6 +16,7 @@ namespace AutoReservation.Client.ViewModels.ViewModels
 
         private ObservableCollection<AutoDto> _autosListe { get; set; }
         private IAutoReservationService _target;
+        public AutoDto _selectedAuto;
 
         public AutoListViewModel(IAutoReservationService target)
         {
@@ -30,6 +31,16 @@ namespace AutoReservation.Client.ViewModels.ViewModels
             {
                 _autosListe = value;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("AutosListe"));
+            }
+        }
+
+        public AutoDto SelectedAuto
+        {
+            get { return _selectedAuto; }
+            set
+            {
+                _selectedAuto = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("SelectedAuto"));
             }
         }
 

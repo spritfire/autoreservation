@@ -16,11 +16,9 @@ namespace AutoReservation.Client.ViewModels.ViewModels
     public class ReservationDetailViewModel : INotifyPropertyChanged, IViewModel
     {
         public event PropertyChangedEventHandler PropertyChanged;
-
         private INavigationService _navService;
 
-        public RelayCommand InsertReservationCommand { get; set; }
-        public RelayCommand UpdateReservationCommand { get; set; }
+        public RelayCommand SaveReservationCommand { get; set; }
         public RelayCommand RemoveReservationCommand { get; set; }
 
         private DateTime _bis;
@@ -30,15 +28,21 @@ namespace AutoReservation.Client.ViewModels.ViewModels
         private AutoDto _auto;
         private KundeDto _kunde;
 
+        public ReservationListViewModel CurrentReservationListViewModel { get; set; }
+        public List<AutoDto> Autos { get; set; }
+        public List<KundeDto> Kunden { get; set; }
+
         private IAutoReservationService _target;
 
-        public ReservationDetailViewModel(INavigationService navService, IAutoReservationService target)
+        public ReservationDetailViewModel(INavigationService navService, IAutoReservationService target, ReservationListViewModel currentReservationListViewModel)
         {
             _navService = navService;
             _target = target;
-            InsertReservationCommand = new RelayCommand(InsertReservation);
-            UpdateReservationCommand = new RelayCommand(UpdateReservation);
+            CurrentReservationListViewModel = currentReservationListViewModel;
+            SaveReservationCommand = new RelayCommand(SaveReservation);
             RemoveReservationCommand = new RelayCommand(RemoveReservation);
+            Autos = _target.AutoList();
+            Kunden = _target.KundeList();
         }
 
         public DateTime Bis
@@ -88,7 +92,18 @@ namespace AutoReservation.Client.ViewModels.ViewModels
             return true;
         }
 
-        public void InsertReservation()
+        private void SaveReservation()
+        {
+            if (_rowVersion == null)
+            {
+                InsertReservation();
+            } else
+            {
+                UpdateReservation();
+            }
+        }
+
+        private void InsertReservation()
         {
             try
             {
@@ -108,9 +123,10 @@ namespace AutoReservation.Client.ViewModels.ViewModels
             {
                 //Handle Fault
             }
+            onClose();
         }
 
-        public void UpdateReservation()
+        private void UpdateReservation()
         {
             try
             {
@@ -136,9 +152,10 @@ namespace AutoReservation.Client.ViewModels.ViewModels
             {
                 //Handle Fault
             }
+            onClose();
         }
 
-        public void RemoveReservation()
+        private void RemoveReservation()
         {
             try
             {
@@ -156,6 +173,13 @@ namespace AutoReservation.Client.ViewModels.ViewModels
             {
                 //Handle Fault
             }
+            onClose();
+        }
+
+        private void onClose()
+        {
+            _navService.CloseWindow();
+            CurrentReservationListViewModel.RefreshList();
         }
     }
 }

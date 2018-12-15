@@ -3,13 +3,9 @@ using AutoReservation.Common.DataTransferObjects;
 using AutoReservation.Common.DataTransferObjects.Faults;
 using AutoReservation.Common.Interfaces;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
 using System.Runtime.CompilerServices;
 using System.ServiceModel;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AutoReservation.Client.ViewModels.ViewModels
 {
@@ -27,15 +23,15 @@ namespace AutoReservation.Client.ViewModels.ViewModels
         private byte[] _rowVersion;
         private string _vorname;
         
-        public KundeListViewModel Klvm { get; set; }
+        public KundeListViewModel CurrentKundeListViewModel { get; set; }
 
         private IAutoReservationService _target;
 
-        public KundeDetailViewModel(INavigationService navService, IAutoReservationService target, KundeListViewModel klvm)
+        public KundeDetailViewModel(INavigationService navService, IAutoReservationService target, KundeListViewModel currentKundeListViewModel)
         {
             _navService = navService;
             _target = target;
-            Klvm = klvm;
+            CurrentKundeListViewModel = currentKundeListViewModel;
             SaveKundeCommand = new RelayCommand(SaveKunde);
             RemoveKundeCommand = new RelayCommand(RemoveKunde);
         }
@@ -81,21 +77,55 @@ namespace AutoReservation.Client.ViewModels.ViewModels
             return true;
         }
 
-        public void SaveKunde()
+        private void SaveKunde()
         {
             if (_rowVersion == null)
             {
-                _target.InsertKunde(new KundeDto
+                InsertKunde();
+            } else
+            {
+                UpdateKunde();
+            }
+        }
+
+        private void InsertKunde()
+        {
+            _target.InsertKunde(new KundeDto
+            {
+                Geburtsdatum = _geburtsdatum,
+                Nachname = _nachname,
+                Vorname = _vorname
+            });
+            onClose();
+        }
+
+        private void UpdateKunde()
+        {
+            try
+            {
+                _target.UpdateKunde(new KundeDto
                 {
                     Geburtsdatum = _geburtsdatum,
                     Nachname = _nachname,
+                    Id = _id,
+                    RowVersion = _rowVersion,
                     Vorname = _vorname
                 });
-            } else
+            }
+            catch (FaultException<OptimisticConcurrencyFault> e)
+            {
+                //Handle Fault
+            }
+            onClose();
+        }
+
+        private void RemoveKunde()
+        {
+            if (_rowVersion != null)
             {
                 try
                 {
-                    _target.UpdateKunde(new KundeDto
+                    _target.RemoveKunde(new KundeDto
                     {
                         Geburtsdatum = _geburtsdatum,
                         Nachname = _nachname,
@@ -109,28 +139,13 @@ namespace AutoReservation.Client.ViewModels.ViewModels
                     //Handle Fault
                 }
             }
-            _navService.CloseWindow();
-            Klvm.RefreshList();
+            onClose();
         }
 
-        public void RemoveKunde()
+        private void onClose()
         {
-            try
-            {
-                _target.RemoveKunde(new KundeDto
-                {
-                    Geburtsdatum = _geburtsdatum,
-                    Nachname = _nachname,
-                    Id = _id,
-                    RowVersion = _rowVersion,
-                    Vorname = _vorname
-                });
-            }
-            catch (FaultException<OptimisticConcurrencyFault> e)
-            {
-                //Handle Fault
-            }
-            Klvm.RefreshList();
+            _navService.CloseWindow();
+            CurrentKundeListViewModel.RefreshList();
         }
     }
 }
