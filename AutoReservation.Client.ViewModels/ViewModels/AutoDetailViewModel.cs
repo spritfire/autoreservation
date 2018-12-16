@@ -130,7 +130,7 @@ namespace AutoReservation.Client.ViewModels.ViewModels
         {
             try
             {
-                _target.InsertAuto(new AutoDto
+                _target.UpdateAuto(new AutoDto
                 {
                     Basistarif = _basistarif,
                     Id = _id,

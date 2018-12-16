@@ -9,6 +9,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.ServiceModel;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace AutoReservation.Client.ViewModels.ViewModels
@@ -28,9 +29,12 @@ namespace AutoReservation.Client.ViewModels.ViewModels
         private AutoDto _auto;
         private KundeDto _kunde;
 
+        private string _autoAsString;
+        private string _kundeAsString;
+
         public ReservationListViewModel CurrentReservationListViewModel { get; set; }
-        public List<AutoDto> Autos { get; set; }
-        public List<KundeDto> Kunden { get; set; }
+        public List<string> Autos { get; set; }
+        public List<string> Kunden { get; set; }
 
         private IAutoReservationService _target;
 
@@ -41,8 +45,8 @@ namespace AutoReservation.Client.ViewModels.ViewModels
             CurrentReservationListViewModel = currentReservationListViewModel;
             SaveReservationCommand = new RelayCommand(SaveReservation);
             RemoveReservationCommand = new RelayCommand(RemoveReservation);
-            Autos = _target.AutoList();
-            Kunden = _target.KundeList();
+            Autos = getList(_target.AutoList());
+            Kunden = getList(_target.KundeList());
         }
 
         public DateTime Bis
@@ -72,13 +76,43 @@ namespace AutoReservation.Client.ViewModels.ViewModels
         public AutoDto Auto
         {
             get { return _auto; }
-            set { SetProperty(ref _auto, value); }
+            set
+            {
+                _autoAsString = value.ToString();
+                SetProperty(ref _auto, value);
+            }
         }
 
         public KundeDto Kunde
         {
             get { return _kunde; }
-            set { SetProperty(ref _kunde, value); }
+            set
+            {
+                _kundeAsString = value.ToString();
+                SetProperty(ref _kunde, value);
+            }
+        }
+
+        public string AutoAsString
+        {
+            get { return _autoAsString; }
+            set
+            {
+                _autoAsString = value;
+                int id = extractId(value);
+                Auto = _target.GetAutoById(id);
+            }
+        }
+
+        public string KundeAsString
+        {
+            get { return _kundeAsString; }
+            set
+            {
+                _kundeAsString = value;
+                int id = extractId(value);
+                Kunde = _target.GetKundeById(id);
+            }
         }
 
         private bool SetProperty<T>(ref T field, T value, [CallerMemberName] string name = null)
@@ -130,7 +164,7 @@ namespace AutoReservation.Client.ViewModels.ViewModels
         {
             try
             {
-                _target.InsertReservation(new ReservationDto
+                _target.UpdateReservation(new ReservationDto
                 {
                     Bis = _bis,
                     ReservationsNr = _reservationsNr,
@@ -159,7 +193,7 @@ namespace AutoReservation.Client.ViewModels.ViewModels
         {
             try
             {
-                _target.InsertReservation(new ReservationDto
+                _target.RemoveReservation(new ReservationDto
                 {
                     Bis = _bis,
                     ReservationsNr = _reservationsNr,
@@ -180,6 +214,21 @@ namespace AutoReservation.Client.ViewModels.ViewModels
         {
             _navService.CloseWindow();
             CurrentReservationListViewModel.RefreshList();
+        }
+
+        private List<string> getList<T>(List<T> dtoList)
+        {
+            List<string> stringList = new List<string>();
+            foreach (T item in dtoList)
+            {
+                stringList.Add(item.ToString());
+            }
+            return stringList;
+        }
+
+        private int extractId(string s)
+        {
+            return Int32.Parse(Regex.Match(s, @"\d+").Value);
         }
     }
 }
