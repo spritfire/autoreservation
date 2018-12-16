@@ -15,13 +15,14 @@ namespace AutoReservation.Client.ViewModels.ViewModels
         public event PropertyChangedEventHandler PropertyChanged;
 
         private ObservableCollection<ReservationDto> _reservationenListe;
+        public List<ReservationDto> SortedReservationenListe { get; private set; }
         private IAutoReservationService _target;
         public ReservationDto _selectedReservation;
 
         public ReservationListViewModel(IAutoReservationService target)
         {
             _target = target;
-            _reservationenListe = new ObservableCollection<ReservationDto>(target.ReservationList());
+            ReservationenListe = new ObservableCollection<ReservationDto>(target.ReservationList());
         }
 
         public ObservableCollection<ReservationDto> ReservationenListe
@@ -30,6 +31,7 @@ namespace AutoReservation.Client.ViewModels.ViewModels
             set
             {
                 _reservationenListe = value;
+                SortedReservationenListe = SortAscending(_reservationenListe);
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("ReservationenListe"));
             }
         }
@@ -47,6 +49,11 @@ namespace AutoReservation.Client.ViewModels.ViewModels
         public void RefreshList()
         {
             ReservationenListe = new ObservableCollection<ReservationDto>(_target.ReservationList());
+        }
+
+        private List<ReservationDto> SortAscending(ObservableCollection<ReservationDto> list)
+        {
+            return list.OrderBy(r => r.Von).ToList();
         }
     }
 }
