@@ -36,7 +36,7 @@ namespace AutoReservation.Client.ViewModels.ViewModels
             }
         }
 
-        public ReservationDto SelectedReservation
+        public ReservationDto SelectedReservation   
         {
             get { return _selectedReservation; }
             set
@@ -51,9 +51,9 @@ namespace AutoReservation.Client.ViewModels.ViewModels
             ReservationenListe = new ObservableCollection<ReservationDto>(_target.ReservationList());
         }
 
-        private List<ReservationDto> SortAscending(ObservableCollection<ReservationDto> list)
+        private List<ReservationDto> SortAscending(ObservableCollection<ReservationDto> coll)
         {
-            return list.OrderBy(r => r.Von).ToList();
+            return coll.OrderBy(r => r.Von).ToList();
         }
     }
 }

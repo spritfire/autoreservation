@@ -32,7 +32,8 @@
             <TabItem Header="Autos">
                 <DockPanel>
                     <Button DockPanel.Dock="Bottom" Command="{Binding OpenDetailAutoWindowCommand}">Neues Auto</Button>
-                    <ListBox ItemsSource="{Binding CurrentAutoListViewModel.AutosListe}" SelectedItem="{Binding CurrentAutoListViewModel.SelectedAuto}" MouseDoubleClick="SelectedAutoDoubleClick">
+                    <ComboBox DockPanel.Dock="Bottom" ItemsSource="{Binding CurrentAutoListViewModel.SortOptionsList}" SelectedValue="{Binding CurrentAutoListViewModel.SortProperty}" />
+                    <ListBox ItemsSource="{Binding CurrentAutoListViewModel.SortedAutosListe}" SelectedItem="{Binding CurrentAutoListViewModel.SelectedAuto}" MouseDoubleClick="SelectedAutoDoubleClick">
                         <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
@@ -50,7 +51,8 @@
             <TabItem Header="Kunden">
                 <DockPanel>
                     <Button DockPanel.Dock="Bottom" Command="{Binding OpenDetailKundeWindowCommand}">Neuer Kunde</Button>
-                    <ListBox ItemsSource="{Binding CurrentKundeListViewModel.KundenListe}" SelectedItem="{Binding CurrentKundeListViewModel.SelectedKunde}" MouseDoubleClick="SelectedKundeDoubleClick">
+                    <ComboBox DockPanel.Dock="Bottom" ItemsSource="{Binding CurrentKundeListViewModel.SortOptionsList}" SelectedValue="{Binding CurrentKundeListViewModel.SortProperty}" />
+                    <ListBox ItemsSource="{Binding CurrentKundeListViewModel.SortedKundenListe}" SelectedItem="{Binding CurrentKundeListViewModel.SelectedKunde}" MouseDoubleClick="SelectedKundeDoubleClick">
                         <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
