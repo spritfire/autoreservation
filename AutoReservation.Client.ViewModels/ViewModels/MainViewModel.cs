@@ -1,6 +1,8 @@
 ﻿using AutoReservation.Client.ViewModels.Navigation;
 using AutoReservation.Common.DataTransferObjects;
 using AutoReservation.Common.Interfaces;
+using System.Threading.Tasks;
+using System.Timers;
 
 namespace AutoReservation.Client.ViewModels.ViewModels
 {
@@ -20,6 +22,8 @@ namespace AutoReservation.Client.ViewModels.ViewModels
         public RelayCommand OpenSelectedAutoWindowCommand { get; set; }
         public RelayCommand OpenSelectedReservationWindowCommand { get; set; }
 
+        private Timer _refreshTimer;
+
         public MainViewModel(INavigationService navService, IAutoReservationService target)
         {
             _navService = navService;
@@ -34,6 +38,8 @@ namespace AutoReservation.Client.ViewModels.ViewModels
             OpenSelectedKundeWindowCommand = new RelayCommand(OpenSelectedKundeWindow);
             OpenSelectedAutoWindowCommand = new RelayCommand(OpenSelectedAutoWindow);
             OpenSelectedReservationWindowCommand = new RelayCommand(OpenSelectedReservationWindow);
+
+            SetTimer();
         }
 
         private void OpenDetailKundeWindow()
@@ -105,6 +111,21 @@ namespace AutoReservation.Client.ViewModels.ViewModels
                 };
                 _navService.OpenWindow("ReservationDetailWindow", vm);
             }
+        }
+
+        private void SetTimer()
+        {
+            _refreshTimer = new Timer(5000);
+            _refreshTimer.Elapsed += RefreshLists;
+            _refreshTimer.AutoReset = true;
+            _refreshTimer.Enabled = true;
+        }
+
+        private void RefreshLists(object source, ElapsedEventArgs e)
+        {
+            CurrentReservationListViewModel.RefreshList();
+            CurrentAutoListViewModel.RefreshList();
+            CurrentKundeListViewModel.RefreshList();
         }
     }
 }
