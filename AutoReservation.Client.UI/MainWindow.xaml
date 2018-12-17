@@ -11,6 +11,7 @@
             <TabItem Header="Reservationen">
                 <DockPanel>
                     <Button DockPanel.Dock="Bottom" Command="{Binding OpenDetailReservationWindowCommand}">Neue Reservation</Button>
+                    <CheckBox DockPanel.Dock="Bottom" IsChecked="{Binding CurrentReservationListViewModel.Filtered}" />
                     <ListBox ItemsSource="{Binding CurrentReservationListViewModel.SortedReservationenListe}" SelectedItem="{Binding CurrentReservationListViewModel.SelectedReservation}" MouseDoubleClick="SelectedReservationDoubleClick">
                         <ListBox.ItemTemplate>
                             <DataTemplate>

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -15,13 +16,15 @@ namespace AutoReservation.Client.ViewModels.ViewModels
         public event PropertyChangedEventHandler PropertyChanged;
 
         private ObservableCollection<ReservationDto> _reservationenListe;
-        public List<ReservationDto> SortedReservationenListe { get; private set; }
+        public List<ReservationDto> _sortedReservationenListe;
         private IAutoReservationService _target;
         public ReservationDto _selectedReservation;
+        public bool _filtered;
 
         public ReservationListViewModel(IAutoReservationService target)
         {
             _target = target;
+            _filtered = true;
             ReservationenListe = new ObservableCollection<ReservationDto>(target.ReservationList());
         }
 
@@ -41,9 +44,35 @@ namespace AutoReservation.Client.ViewModels.ViewModels
             get { return _selectedReservation; }
             set
             {
-                _selectedReservation = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("SelectedReservation"));
+                SetProperty(ref _selectedReservation, value);
             }
+        }
+
+        public List<ReservationDto> SortedReservationenListe
+        {
+            get { return _sortedReservationenListe; }
+            set { SetProperty(ref _sortedReservationenListe, value); }
+        }
+
+        public bool Filtered
+        {
+            get { return _filtered; }
+            set
+            {
+                _filtered = value;
+                SortedReservationenListe = SortAscending(_reservationenListe);
+            }
+        }
+
+        private bool SetProperty<T>(ref T field, T value, [CallerMemberName] string name = null)
+        {
+            if (Equals(field, value))
+            {
+                return false;
+            }
+            field = value;
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+            return true;
         }
 
         public void RefreshList()
@@ -53,7 +82,12 @@ namespace AutoReservation.Client.ViewModels.ViewModels
 
         private List<ReservationDto> SortAscending(ObservableCollection<ReservationDto> coll)
         {
-            return coll.OrderBy(r => r.Von).ToList();
+            List<ReservationDto> sortedList = coll.OrderBy(r => r.Von).ToList();
+            if (Filtered)
+            {
+                sortedList.RemoveAll(r => r.Bis < DateTime.Now);
+            }
+            return sortedList;
         }
     }
 }

@@ -8,6 +8,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.ServiceModel;
+using System.Windows;
 
 namespace AutoReservation.Client.ViewModels.ViewModels
 {
@@ -149,7 +150,7 @@ namespace AutoReservation.Client.ViewModels.ViewModels
 
         private void RemoveAuto()
         {
-            if (_rowVersion != null)
+            if (_rowVersion != null && UserIsSure())
             {
                 try
                 {
@@ -167,14 +168,20 @@ namespace AutoReservation.Client.ViewModels.ViewModels
                 {
                     //Handle Fault
                 }
+                onClose();
             }
-            onClose();
         }
 
         private void onClose()
         {
             _navService.CloseWindow();
             CurrentAutoListViewModel.RefreshList();
+        }
+
+        private bool UserIsSure()
+        {
+            MessageBoxResult result = MessageBox.Show("Doe you want to permenantly delete this car?", "Confirmation", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            return (result == MessageBoxResult.Yes) ? true : false;
         }
     }
 }

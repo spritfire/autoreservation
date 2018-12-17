@@ -11,6 +11,7 @@ using System.ServiceModel;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace AutoReservation.Client.ViewModels.ViewModels
 {
@@ -191,23 +192,26 @@ namespace AutoReservation.Client.ViewModels.ViewModels
 
         private void RemoveReservation()
         {
-            try
+            if (_rowVersion != null && UserIsSure())
             {
-                _target.RemoveReservation(new ReservationDto
+                try
                 {
-                    Bis = _bis,
-                    ReservationsNr = _reservationsNr,
-                    RowVersion = _rowVersion,
-                    Von = _von,
-                    Auto = _auto,
-                    Kunde = _kunde
-                });
+                    _target.RemoveReservation(new ReservationDto
+                    {
+                        Bis = _bis,
+                        ReservationsNr = _reservationsNr,
+                        RowVersion = _rowVersion,
+                        Von = _von,
+                        Auto = _auto,
+                        Kunde = _kunde
+                    });
+                }
+                catch (FaultException<OptimisticConcurrencyFault> e)
+                {
+                    //Handle Fault
+                }
+                onClose();
             }
-            catch (FaultException<OptimisticConcurrencyFault> e)
-            {
-                //Handle Fault
-            }
-            onClose();
         }
 
         private void onClose()
@@ -229,6 +233,12 @@ namespace AutoReservation.Client.ViewModels.ViewModels
         private int extractId(string s)
         {
             return Int32.Parse(Regex.Match(s, @"\d+").Value);
+        }
+
+        private bool UserIsSure()
+        {
+            MessageBoxResult result = MessageBox.Show("Doe you want to permenantly delete this reservation?", "Confirmation", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            return (result == MessageBoxResult.Yes) ? true : false;
         }
     }
 }
