@@ -113,7 +113,7 @@ namespace AutoReservation.Client.ViewModels.ViewModels
                     Vorname = _vorname
                 });
             }
-            catch (FaultException<OptimisticConcurrencyFault> e)
+            catch (FaultException<OptimisticConcurrencyFault>)
             {
                 MessageBox.Show("Oups, somebody got there first. The customer has already been altered or deleted. Try again!");
             }
@@ -135,7 +135,7 @@ namespace AutoReservation.Client.ViewModels.ViewModels
                         Vorname = _vorname
                     });
                 }
-                catch (FaultException<OptimisticConcurrencyFault> e)
+                catch (FaultException<OptimisticConcurrencyFault>)
                 {
                     MessageBox.Show("Oups, somebody got there first. The customer has already been altered or deleted. Try again!");
                 }

@@ -151,11 +151,11 @@ namespace AutoReservation.Client.ViewModels.ViewModels
                 });
                 onClose();
             }
-            catch (FaultException<AutoUnavailableFault> e)
+            catch (FaultException<AutoUnavailableFault>)
             {
                 MessageBox.Show("This car is unavailable during the specified time frame. Please choose a different car.");
             }
-            catch (FaultException<InvalidDateRangeFault> e)
+            catch (FaultException<InvalidDateRangeFault>)
             {
                 MessageBox.Show("Please enter a valid date range. Minimum reservation length must be one day.");
             }
@@ -176,15 +176,15 @@ namespace AutoReservation.Client.ViewModels.ViewModels
                 });
                 onClose();
             }
-            catch (FaultException<AutoUnavailableFault> e)
+            catch (FaultException<AutoUnavailableFault>)
             {
                 MessageBox.Show("This car is unavailable during the specified time frame. Please choose a different car.");
             }
-            catch (FaultException<InvalidDateRangeFault> e)
+            catch (FaultException<InvalidDateRangeFault>)
             {
                 MessageBox.Show("Please enter a valid date range. Minimum reservation length must be one day.");
             }
-            catch (FaultException<OptimisticConcurrencyFault> e)
+            catch (FaultException<OptimisticConcurrencyFault>)
             {
                 MessageBox.Show("Oups, somebody got there first. The customer has already been altered or deleted. Try again!");
                 onClose();
@@ -207,7 +207,7 @@ namespace AutoReservation.Client.ViewModels.ViewModels
                         Kunde = _kunde
                     });
                 }
-                catch (FaultException<OptimisticConcurrencyFault> e)
+                catch (FaultException<OptimisticConcurrencyFault>)
                 {
                     MessageBox.Show("Oups, somebody got there first. The reservation has already been altered or deleted. Try again!");
                 }

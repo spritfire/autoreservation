@@ -141,7 +141,7 @@ namespace AutoReservation.Client.ViewModels.ViewModels
                     AutoKlasse = _autoKlasse
                 });
             }
-            catch (FaultException<OptimisticConcurrencyFault> e)
+            catch (FaultException<OptimisticConcurrencyFault>)
             {
                 MessageBox.Show("Oups, somebody got there first. The car has already been altered or deleted. Try again!");
             }
@@ -164,7 +164,7 @@ namespace AutoReservation.Client.ViewModels.ViewModels
                         AutoKlasse = _autoKlasse
                     });
                 }
-                catch (FaultException<OptimisticConcurrencyFault> e)
+                catch (FaultException<OptimisticConcurrencyFault>)
                 {
                     MessageBox.Show("Oups, somebody got there first. The car has already been altered or deleted. Try again!");
                 }

@@ -8,9 +8,9 @@
         Title="MainWindow" Height="450" Width="800">
     <Grid>
         <TabControl>
-            <TabItem Header="Reservationen">
+            <TabItem Header="Reservations">
                 <DockPanel>
-                    <Button DockPanel.Dock="Bottom" Command="{Binding OpenDetailReservationWindowCommand}">Neue Reservation</Button>
+                    <Button DockPanel.Dock="Bottom" Command="{Binding OpenDetailReservationWindowCommand}">New Reservation</Button>
                     <CheckBox DockPanel.Dock="Bottom" IsChecked="{Binding CurrentReservationListViewModel.Filtered}" />
                     <ListBox ItemsSource="{Binding CurrentReservationListViewModel.SortedReservationenListe}" SelectedItem="{Binding CurrentReservationListViewModel.SelectedReservation}" MouseDoubleClick="SelectedReservationDoubleClick">
                         <ListBox.ItemTemplate>
@@ -30,9 +30,9 @@
                 </DockPanel>
             </TabItem>
 
-            <TabItem Header="Autos">
+            <TabItem Header="Cars">
                 <DockPanel>
-                    <Button DockPanel.Dock="Bottom" Command="{Binding OpenDetailAutoWindowCommand}">Neues Auto</Button>
+                    <Button DockPanel.Dock="Bottom" Command="{Binding OpenDetailAutoWindowCommand}">New Car</Button>
                     <ComboBox DockPanel.Dock="Bottom" ItemsSource="{Binding CurrentAutoListViewModel.SortOptionsList}" SelectedValue="{Binding CurrentAutoListViewModel.SortProperty}" />
                     <ListBox ItemsSource="{Binding CurrentAutoListViewModel.SortedAutosListe}" SelectedItem="{Binding CurrentAutoListViewModel.SelectedAuto}" MouseDoubleClick="SelectedAutoDoubleClick">
                         <ListBox.ItemTemplate>
@@ -49,9 +49,9 @@
                 </DockPanel>
             </TabItem>
 
-            <TabItem Header="Kunden">
+            <TabItem Header="Customers">
                 <DockPanel>
-                    <Button DockPanel.Dock="Bottom" Command="{Binding OpenDetailKundeWindowCommand}">Neuer Kunde</Button>
+                    <Button DockPanel.Dock="Bottom" Command="{Binding OpenDetailKundeWindowCommand}">New Customer</Button>
                     <ComboBox DockPanel.Dock="Bottom" ItemsSource="{Binding CurrentKundeListViewModel.SortOptionsList}" SelectedValue="{Binding CurrentKundeListViewModel.SortProperty}" />
                     <ListBox ItemsSource="{Binding CurrentKundeListViewModel.SortedKundenListe}" SelectedItem="{Binding CurrentKundeListViewModel.SelectedKunde}" MouseDoubleClick="SelectedKundeDoubleClick">
                         <ListBox.ItemTemplate>
