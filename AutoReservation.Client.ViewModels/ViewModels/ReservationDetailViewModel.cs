@@ -149,16 +149,16 @@ namespace AutoReservation.Client.ViewModels.ViewModels
                     Auto = _auto,
                     Kunde = _kunde
                 });
+                onClose();
             }
             catch (FaultException<AutoUnavailableFault> e)
             {
-                //Handle Fault
+                MessageBox.Show("This car is unavailable during the specified time frame. Please choose a different car.");
             }
             catch (FaultException<InvalidDateRangeFault> e)
             {
-                //Handle Fault
+                MessageBox.Show("Please enter a valid date range. Minimum reservation length must be one day.");
             }
-            onClose();
         }
 
         private void UpdateReservation()
@@ -174,20 +174,21 @@ namespace AutoReservation.Client.ViewModels.ViewModels
                     Auto = _auto,
                     Kunde = _kunde
                 });
+                onClose();
             }
             catch (FaultException<AutoUnavailableFault> e)
             {
-                //Handle Fault
+                MessageBox.Show("This car is unavailable during the specified time frame. Please choose a different car.");
             }
             catch (FaultException<InvalidDateRangeFault> e)
             {
-                //Handle Fault
+                MessageBox.Show("Please enter a valid date range. Minimum reservation length must be one day.");
             }
             catch (FaultException<OptimisticConcurrencyFault> e)
             {
-                //Handle Fault
+                MessageBox.Show("Oups, somebody got there first. The customer has already been altered or deleted. Try again!");
+                onClose();
             }
-            onClose();
         }
 
         private void RemoveReservation()
@@ -208,7 +209,7 @@ namespace AutoReservation.Client.ViewModels.ViewModels
                 }
                 catch (FaultException<OptimisticConcurrencyFault> e)
                 {
-                    //Handle Fault
+                    MessageBox.Show("Oups, somebody got there first. The reservation has already been altered or deleted. Try again!");
                 }
                 onClose();
             }
@@ -237,7 +238,7 @@ namespace AutoReservation.Client.ViewModels.ViewModels
 
         private bool UserIsSure()
         {
-            MessageBoxResult result = MessageBox.Show("Doe you want to permenantly delete this reservation?", "Confirmation", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            MessageBoxResult result = MessageBox.Show("Do you want to permenantly delete this reservation?", "Confirmation", MessageBoxButton.YesNo, MessageBoxImage.Question);
             return (result == MessageBoxResult.Yes) ? true : false;
         }
     }

@@ -115,7 +115,7 @@ namespace AutoReservation.Client.ViewModels.ViewModels
             }
             catch (FaultException<OptimisticConcurrencyFault> e)
             {
-                //Handle Fault
+                MessageBox.Show("Oups, somebody got there first. The customer has already been altered or deleted. Try again!");
             }
             onClose();
         }
@@ -137,7 +137,7 @@ namespace AutoReservation.Client.ViewModels.ViewModels
                 }
                 catch (FaultException<OptimisticConcurrencyFault> e)
                 {
-                    //Handle Fault
+                    MessageBox.Show("Oups, somebody got there first. The customer has already been altered or deleted. Try again!");
                 }
                 onClose();
             }
@@ -151,7 +151,7 @@ namespace AutoReservation.Client.ViewModels.ViewModels
 
         private bool UserIsSure()
         {
-            MessageBoxResult result = MessageBox.Show("Doe you want to permenantly delete this customer?", "Confirmation", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            MessageBoxResult result = MessageBox.Show("Do you want to permenantly delete this customer?", "Confirmation", MessageBoxButton.YesNo, MessageBoxImage.Question);
             return (result == MessageBoxResult.Yes) ? true : false;
         }
     }
