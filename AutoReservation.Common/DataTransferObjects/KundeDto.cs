@@ -11,6 +11,6 @@ namespace AutoReservation.Common.DataTransferObjects
         public string Vorname { get; set; }
 
         public override string ToString()
-            => $"{Id}; {Nachname}; {Vorname}; {Geburtsdatum}; {RowVersion}";
+            => $"ID: {Id} | {Nachname}, {Vorname} | Date of birth: {Geburtsdatum.ToShortDateString()}";
     }
 }

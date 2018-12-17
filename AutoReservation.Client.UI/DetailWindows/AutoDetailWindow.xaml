@@ -5,12 +5,62 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:AutoReservation.Client.UI.DetailWindows"
         mc:Ignorable="d"
-        Title="AutoDetailWindow" Height="450" Width="800">
+        Title="AutoDetailWindow" Height="450" Width="800" FontSize="14">
+    <Window.Resources>
+        <Style TargetType="Button">
+            <Setter Property="Width" Value="140" />
+            <Setter Property="Height" Value="30" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="Margin" Value="10 10" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border CornerRadius="3" BorderBrush="#555" BorderThickness="1" Background="#eee" >
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="Title" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="28" />
+            <Setter Property="Margin" Value="5" />
+        </Style>
+
+        <Style TargetType="Separator">
+            <Setter Property="Margin" Value="0 0 0 20" />
+        </Style>
+
+        <Style TargetType="TextBlock">
+            <Setter Property="Margin" Value="5" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+        </Style>
+
+        <Style TargetType="TextBox">
+            <Setter Property="Width" Value="600" />
+            <Setter Property="HorizontalAlignment" Value="Left" />
+        </Style>
+
+        <Style TargetType="ComboBox">
+            <Setter Property="Width" Value="600" />
+            <Setter Property="HorizontalAlignment" Value="Left" />
+        </Style>
+
+        <Style x:Key="Buttons" TargetType="StackPanel">
+            <Setter Property="Margin" Value="100 0" />
+        </Style>
+
+        <Style x:Key="FirstColumn" TargetType="ColumnDefinition">
+            <Setter Property="Width" Value="100" />
+        </Style>
+    </Window.Resources>
     <StackPanel>
-        <TextBlock Text="Auto" FontSize="28" />
+        <TextBlock Style="{StaticResource Title}" Text="Car Details" />
+        <Separator />
         <Grid>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="100" />
+                <ColumnDefinition Style="{StaticResource FirstColumn}" />
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
@@ -19,16 +69,18 @@
                 <RowDefinition />
                 <RowDefinition />
             </Grid.RowDefinitions>
-            <TextBlock Text="Marke:" Grid.Column="0" Grid.Row="0" />
+            <TextBlock Text="Car:" Grid.Column="0" Grid.Row="0" />
             <TextBox Grid.Column="1" Grid.Row="0" Text="{Binding Marke}" />
-            <TextBlock Text="AutoKlasse:" Grid.Column="0" Grid.Row="1" />
+            <TextBlock Text="Category:" Grid.Column="0" Grid.Row="1" />
             <ComboBox Grid.Column="1" Grid.Row="1" ItemsSource="{Binding Path=AutoKlassen}" SelectedValue="{Binding AutoKlasseAsString}" />
-            <TextBlock Text="Basistarif:" Grid.Column="0" Grid.Row="2" />
+            <TextBlock Text="Basic cost:" Grid.Column="0" Grid.Row="2" />
             <TextBox Grid.Column="1" Grid.Row="2" Text="{Binding Basistarif}" />
-            <TextBlock Text="Tagestarif:" Grid.Column="0" Grid.Row="3" />
+            <TextBlock Text="Daily cost:" Grid.Column="0" Grid.Row="3" />
             <TextBox Grid.Column="1" Grid.Row="3" Text="{Binding Tagestarif}" />
         </Grid>
-        <Button Command="{Binding SaveAutoCommand}">Speichern</Button>
-        <Button Command="{Binding RemoveAutoCommand}">Auto löschen</Button>
+        <StackPanel Style="{StaticResource Buttons}" Orientation="Horizontal" HorizontalAlignment="Left">
+            <Button Command="{Binding SaveAutoCommand}">Save</Button>
+            <Button Command="{Binding RemoveAutoCommand}">Delete Car</Button>
+        </StackPanel>
     </StackPanel>
 </Window>

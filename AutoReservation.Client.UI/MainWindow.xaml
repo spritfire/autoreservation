@@ -5,23 +5,87 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:AutoReservation.Client.UI"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="450" Width="800" FontSize="14">
+    <Window.Resources>
+        <Style TargetType="Button">
+            <Setter Property="Width" Value="140" />
+            <Setter Property="Height" Value="30" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="Margin" Value="10 10" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border CornerRadius="3" BorderBrush="#555" BorderThickness="1" Background="#eee" >
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style TargetType="CheckBox">
+            <Setter Property="Margin" Value="10 18" />
+        </Style>
+
+        <Style x:Key="CheckboxDescription" TargetType="TextBlock">
+            <Setter Property="Margin" Value="0 15" />
+        </Style>
+
+        <Style x:Key="ItemDescription" TargetType="TextBlock">
+            <Setter Property="Margin" Value="0 0 20 0" />
+            <Setter Property="FontWeight" Value="Bold" />
+        </Style>
+
+        <Style TargetType="ComboBox">
+            <Setter Property="Width" Value="400" />
+            <Setter Property="Height" Value="30" />
+            <Setter Property="HorizontalAlignment" Value="Left" />
+            <Setter Property="Margin" Value="10" />
+        </Style>
+
+        <Style x:Key="SortDescription" TargetType="TextBlock">
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="Margin" Value="10" />
+        </Style>
+
+        <Style x:Key="FirstColumn" TargetType="ColumnDefinition">
+            <Setter Property="Width" Value="120" />
+        </Style>
+    </Window.Resources>
     <Grid>
         <TabControl>
             <TabItem Header="Reservations">
                 <DockPanel>
-                    <Button DockPanel.Dock="Bottom" Command="{Binding OpenDetailReservationWindowCommand}">New Reservation</Button>
-                    <CheckBox DockPanel.Dock="Bottom" IsChecked="{Binding CurrentReservationListViewModel.Filtered}" />
+                    <DockPanel DockPanel.Dock="Bottom" HorizontalAlignment="Stretch" >
+                        <CheckBox IsChecked="{Binding CurrentReservationListViewModel.Filtered}" />
+                        <TextBlock Style="{StaticResource CheckboxDescription}">Hide expired reservations</TextBlock>
+                        <Button Command="{Binding OpenDetailReservationWindowCommand}" HorizontalAlignment="Right">New Reservation</Button>
+                    </DockPanel>
                     <ListBox ItemsSource="{Binding CurrentReservationListViewModel.SortedReservationenListe}" SelectedItem="{Binding CurrentReservationListViewModel.SelectedReservation}" MouseDoubleClick="SelectedReservationDoubleClick">
                         <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Vertical">
-                                    <StackPanel Orientation="Horizontal">
-                                        <TextBlock Text="{Binding Path=Von}" />
-                                        <TextBlock Text="{Binding Path=Bis}" />
-                                    </StackPanel>
-                                    <TextBlock Text="{Binding Path=Auto}" />
-                                    <TextBlock Text="{Binding Path=Kunde}" />
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Style="{StaticResource FirstColumn}"/>
+                                            <ColumnDefinition />
+                                        </Grid.ColumnDefinitions>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition />
+                                            <RowDefinition />
+                                            <RowDefinition />
+                                            <RowDefinition />
+                                        </Grid.RowDefinitions>
+                                        <TextBlock Grid.Row="0" Grid.Column="0" Style="{StaticResource ItemDescription}" Text="Start:" />
+                                        <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding Path=Von}" />
+                                        <TextBlock Grid.Row="1" Grid.Column="0" Style="{StaticResource ItemDescription}" Text="End:" />
+                                        <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding Path=Bis}" />
+                                        <TextBlock Grid.Row="2" Grid.Column="0" Style="{StaticResource ItemDescription}" Text="Car:" />
+                                        <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding Path=Auto}" />
+                                        <TextBlock Grid.Row="3" Grid.Column="0" Style="{StaticResource ItemDescription}" Text="Customer:" />
+                                        <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding Path=Kunde}" />
+                                    </Grid>
                                     <Separator />
                                 </StackPanel>
                             </DataTemplate>
@@ -32,16 +96,36 @@
 
             <TabItem Header="Cars">
                 <DockPanel>
-                    <Button DockPanel.Dock="Bottom" Command="{Binding OpenDetailAutoWindowCommand}">New Car</Button>
-                    <ComboBox DockPanel.Dock="Bottom" ItemsSource="{Binding CurrentAutoListViewModel.SortOptionsList}" SelectedValue="{Binding CurrentAutoListViewModel.SortProperty}" />
+                    <DockPanel DockPanel.Dock="Bottom" HorizontalAlignment="Stretch">
+                        <TextBlock Style="{StaticResource SortDescription}" Text="Sort the list:" />
+                        <ComboBox ItemsSource="{Binding CurrentAutoListViewModel.SortOptionsList}" SelectedValue="{Binding CurrentAutoListViewModel.SortProperty}" />
+                        <Button  Command="{Binding OpenDetailAutoWindowCommand}" HorizontalAlignment="Right">New Car</Button>
+                    </DockPanel>
                     <ListBox ItemsSource="{Binding CurrentAutoListViewModel.SortedAutosListe}" SelectedItem="{Binding CurrentAutoListViewModel.SelectedAuto}" MouseDoubleClick="SelectedAutoDoubleClick">
                         <ListBox.ItemTemplate>
                             <DataTemplate>
-                                <StackPanel Orientation="Horizontal">
-                                    <TextBlock Text="{Binding Path=Marke}" />
-                                    <TextBlock Text="{Binding Path=AutoKlasse}" />
-                                    <TextBlock Text="{Binding Path=Basistarif}" />
-                                    <TextBlock Text="{Binding Path=Tagestarif}" />
+                                <StackPanel Orientation="Vertical">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Style="{StaticResource FirstColumn}"/>
+                                            <ColumnDefinition />
+                                        </Grid.ColumnDefinitions>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition />
+                                            <RowDefinition />
+                                            <RowDefinition />
+                                            <RowDefinition />
+                                        </Grid.RowDefinitions>
+                                        <TextBlock Grid.Row="0" Grid.Column="0" Style="{StaticResource ItemDescription}" Text="Car:" />
+                                        <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding Path=Marke}" />
+                                        <TextBlock Grid.Row="1" Grid.Column="0" Style="{StaticResource ItemDescription}" Text="Category:" />
+                                        <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding Path=AutoKlasse}" />
+                                        <TextBlock Grid.Row="2" Grid.Column="0" Style="{StaticResource ItemDescription}" Text="Basic cost:" />
+                                        <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding Path=Basistarif}" />
+                                        <TextBlock Grid.Row="3" Grid.Column="0" Style="{StaticResource ItemDescription}" Text="Daily cost:" />
+                                        <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding Path=Tagestarif}" />
+                                    </Grid>
+                                    <Separator />
                                 </StackPanel>
                             </DataTemplate>
                         </ListBox.ItemTemplate>
@@ -51,15 +135,33 @@
 
             <TabItem Header="Customers">
                 <DockPanel>
-                    <Button DockPanel.Dock="Bottom" Command="{Binding OpenDetailKundeWindowCommand}">New Customer</Button>
-                    <ComboBox DockPanel.Dock="Bottom" ItemsSource="{Binding CurrentKundeListViewModel.SortOptionsList}" SelectedValue="{Binding CurrentKundeListViewModel.SortProperty}" />
+                    <DockPanel DockPanel.Dock="Bottom" HorizontalAlignment="Stretch">
+                        <TextBlock Style="{StaticResource SortDescription}" Text="Sort the list:" />
+                        <ComboBox ItemsSource="{Binding CurrentKundeListViewModel.SortOptionsList}" SelectedValue="{Binding CurrentKundeListViewModel.SortProperty}" />
+                        <Button Command="{Binding OpenDetailKundeWindowCommand}" HorizontalAlignment="Right">New Customer</Button>
+                    </DockPanel>
                     <ListBox ItemsSource="{Binding CurrentKundeListViewModel.SortedKundenListe}" SelectedItem="{Binding CurrentKundeListViewModel.SelectedKunde}" MouseDoubleClick="SelectedKundeDoubleClick">
                         <ListBox.ItemTemplate>
                             <DataTemplate>
-                                <StackPanel Orientation="Horizontal">
-                                    <TextBlock Text="{Binding Path=Nachname}" />
-                                    <TextBlock Text="{Binding Path=Vorname}" />
-                                    <TextBlock Text="{Binding Path=Geburtsdatum}" />
+                                <StackPanel Orientation="Vertical">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Style="{StaticResource FirstColumn}"/>
+                                            <ColumnDefinition />
+                                        </Grid.ColumnDefinitions>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition />
+                                            <RowDefinition />
+                                            <RowDefinition />
+                                        </Grid.RowDefinitions>
+                                        <TextBlock Grid.Row="0" Grid.Column="0" Style="{StaticResource ItemDescription}" Text="Last name:" />
+                                        <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding Path=Nachname}" />
+                                        <TextBlock Grid.Row="1" Grid.Column="0" Style="{StaticResource ItemDescription}" Text="First name:" />
+                                        <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding Path=Vorname}" />
+                                        <TextBlock Grid.Row="2" Grid.Column="0" Style="{StaticResource ItemDescription}" Text="Date of birth:" />
+                                        <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding Path=Geburtsdatum}" />
+                                    </Grid>
+                                    <Separator />
                                 </StackPanel>
                             </DataTemplate>
                         </ListBox.ItemTemplate>

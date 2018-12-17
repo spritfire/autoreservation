@@ -12,6 +12,6 @@ namespace AutoReservation.Common.DataTransferObjects
         public KundeDto Kunde { get; set; }
 
         public override string ToString()
-            => $"{ReservationsNr}; {Von}; {Bis}; {Auto}; {Kunde}";
+            => $"Reservation-Nr.: {ReservationsNr} | Start: {Von}, End: {Bis} | Car: {Auto} | Customer: {Kunde}";
     }
 }
