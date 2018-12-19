@@ -79,8 +79,8 @@
             <ComboBox Grid.Column="1" Grid.Row="3" ItemsSource="{Binding Path=Kunden}" SelectedValue="{Binding KundeAsString}" />
         </Grid>
         <StackPanel Style="{StaticResource Buttons}" Orientation="Horizontal">
-            <Button Command="{Binding SaveReservationCommand}">Speichern</Button>
-            <Button Command="{Binding RemoveReservationCommand}">Reservation löschen</Button>
+            <Button Command="{Binding SaveReservationCommand}">Save</Button>
+            <Button Command="{Binding RemoveReservationCommand}">Delete Reservation</Button>
         </StackPanel>
     </StackPanel>
 </Window>

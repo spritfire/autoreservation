@@ -71,8 +71,8 @@
             <TextBox Grid.Column="1" Grid.Row="2" Text="{Binding Geburtsdatum}" />
         </Grid>
         <StackPanel Style="{StaticResource Buttons}" Orientation="Horizontal">
-            <Button Command="{Binding SaveKundeCommand}">Speichern</Button>
-            <Button Command="{Binding RemoveKundeCommand}">Kunde löschen</Button>
+            <Button Command="{Binding SaveKundeCommand}">Save</Button>
+            <Button Command="{Binding RemoveKundeCommand}">Delete Customer</Button>
         </StackPanel>
     </StackPanel>
 </Window>
